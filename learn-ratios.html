@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Learn what ratios really mean - from first principles with interactive examples">
+<title>Learn Ratios — 대박 Daebak</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔢</text></svg>">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pink:#ff6b9d;--pink-l:#ffe4ef;--purple:#7c3aed;--purp-l:#a78bfa;
+  --purp-bg:#f5f3ff;--hero:#0d0618;
+  --surface:#fff;--text:#1a0a2e;--muted:#64748b;--border:#e8e4f4;
+  --orange:#f59e0b;--orange-l:#fef3c7;
+  --green:#10b981;--green-l:#d1fae5;
+  --blue:#3b82f6;--blue-l:#dbeafe;
+  --red:#ef4444;--red-l:#fee2e2;
+  --r:14px;
+}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:var(--purp-bg);color:var(--text);line-height:1.6}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(13,6,24,.96);backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,107,157,.18);padding:0 24px;
+  display:flex;align-items:center;justify-content:space-between;height:58px}
+.nav-logo{font-size:1.25rem;font-weight:900;color:#fff;text-decoration:none;
+  display:flex;align-items:center;gap:7px;letter-spacing:-.3px}
+.nav-logo .kr{color:var(--pink)}
+.nav-back{color:rgba(255,255,255,.7);text-decoration:none;font-size:.9rem;
+  padding:6px 14px;border-radius:20px;transition:all .15s;display:flex;align-items:center;gap:6px}
+.nav-back:hover{color:#fff;background:rgba(255,255,255,.1)}
+
+/* CONTAINER */
+.container{max-width:920px;margin:0 auto;padding:40px 24px 80px}
+
+/* HEADER */
+.page-header{text-align:center;margin-bottom:50px}
+.page-header h1{font-size:clamp(2rem,5vw,2.8rem);font-weight:900;
+  letter-spacing:-.8px;margin-bottom:14px}
+.page-header h1 .emoji{font-size:1.2em}
+.page-header p{color:var(--muted);font-size:1.05rem;max-width:600px;margin:0 auto;line-height:1.7}
+
+/* SECTION */
+.section{background:#fff;border-radius:var(--r);padding:36px 32px;
+  border:1.5px solid var(--border);box-shadow:0 4px 20px rgba(124,58,237,.08);
+  margin-bottom:32px}
+.section h2{font-size:1.6rem;font-weight:900;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.section h2 .emoji{font-size:1.4rem}
+.section .subtitle{color:var(--muted);font-size:.95rem;margin-bottom:24px}
+.section h3{font-size:1.2rem;font-weight:800;margin:28px 0 14px;color:var(--purple)}
+.section p{line-height:1.75;margin-bottom:16px}
+.section strong{font-weight:700;color:var(--purple)}
+
+/* FRUIT BOWL VISUAL */
+.fruit-visual{background:var(--orange-l);border-radius:12px;padding:28px;margin:24px 0;
+  border:2px solid var(--orange)}
+.fruit-row{margin:16px 0}
+.fruit-label{font-size:.9rem;font-weight:700;color:#92400e;margin-bottom:8px}
+.fruit-items{font-size:1.8rem;line-height:1.5;letter-spacing:2px}
+.ratio-display{background:#fff;border-radius:8px;padding:16px;margin-top:20px;
+  text-align:center;border:2px solid var(--orange)}
+.ratio-display .label{font-size:.85rem;color:var(--muted);margin-bottom:6px}
+.ratio-display .ratio{font-size:2rem;font-weight:900;color:var(--orange)}
+.ratio-display .meaning{font-size:.9rem;color:var(--muted);margin-top:8px;font-style:italic}
+
+/* NOTATION BOX */
+.notation-box{background:var(--blue-l);border-radius:12px;padding:20px;
+  border:2px solid var(--blue);margin:20px 0}
+.notation-box h4{font-size:1rem;font-weight:800;color:#1e40af;margin-bottom:12px}
+.notation-item{background:#fff;border-radius:8px;padding:12px 16px;margin:8px 0;
+  display:flex;align-items:center;justify-content:space-between}
+.notation-item .format{font-size:1.1rem;font-weight:700;color:var(--blue)}
+.notation-item .name{font-size:.85rem;color:var(--muted)}
+
+/* INTERACTIVE TABLE */
+.interactive-table{margin:24px 0}
+.table-wrapper{overflow-x:auto}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden}
+th{background:var(--purple);color:#fff;padding:12px;font-size:.9rem;font-weight:700;text-align:center}
+td{padding:12px;text-align:center;border-bottom:1px solid var(--border);font-size:.95rem}
+tr:last-child td{border-bottom:none}
+tr:hover{background:var(--purp-bg)}
+.highlight{background:var(--orange-l);font-weight:700;color:var(--orange)}
+
+/* SIMPLIFY DEMO */
+.simplify-demo{background:var(--green-l);border-radius:12px;padding:24px;
+  border:2px solid var(--green);margin:24px 0}
+.simplify-step{background:#fff;border-radius:8px;padding:16px;margin:12px 0;
+  position:relative}
+.simplify-step .ratio-big{font-size:1.8rem;font-weight:900;color:var(--text);
+  text-align:center;margin-bottom:8px}
+.simplify-step .explanation{font-size:.9rem;color:var(--muted);text-align:center}
+.arrow-down{text-align:center;font-size:1.5rem;color:var(--green);margin:8px 0}
+
+/* KEY INSIGHT */
+.insight{background:linear-gradient(135deg,#fef3c7 0%,#fed7aa 100%);
+  border-left:4px solid var(--orange);padding:20px 24px;border-radius:0 12px 12px 0;
+  margin:24px 0;font-size:.95rem;line-height:1.7}
+.insight strong{color:#92400e}
+.insight-title{font-weight:800;font-size:1.05rem;color:#92400e;margin-bottom:8px;
+  display:flex;align-items:center;gap:8px}
+
+/* WARNING BOX */
+.warning{background:var(--red-l);border-left:4px solid var(--red);
+  padding:20px 24px;border-radius:0 12px 12px 0;margin:24px 0}
+.warning-title{font-weight:800;font-size:1.05rem;color:#991b1b;margin-bottom:8px;
+  display:flex;align-items:center;gap:8px}
+.warning p{color:#7f1d1d;line-height:1.7;margin-bottom:12px}
+.comparison{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.comp-box{background:#fff;border-radius:8px;padding:16px;text-align:center}
+.comp-box.wrong{border:2px solid var(--red)}
+.comp-box.right{border:2px solid var(--green)}
+.comp-label{font-size:.85rem;font-weight:800;margin-bottom:8px}
+.comp-label.wrong{color:var(--red)}
+.comp-label.right{color:var(--green)}
+.comp-math{font-size:1.1rem;font-weight:700;margin:8px 0}
+.comp-result{font-size:.85rem;color:var(--muted);margin-top:8px}
+
+/* INTERACTIVE CONTROLS */
+.controls{margin:20px 0;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.controls button{padding:10px 20px;border-radius:99px;border:2px solid var(--purple);
+  background:#fff;color:var(--purple);font-weight:700;cursor:pointer;transition:all .2s;
+  font-size:.9rem}
+.controls button:hover{background:var(--purple);color:#fff}
+.controls button.active{background:var(--purple);color:#fff}
+
+/* THINK PROMPT */
+.think-prompt{background:var(--purp-bg);border-radius:12px;padding:20px 24px;
+  border:2px dashed var(--purple);margin:24px 0}
+.think-prompt-title{font-weight:800;font-size:1rem;color:var(--purple);
+  margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.think-prompt ul{margin-left:20px;color:var(--text)}
+.think-prompt li{margin:8px 0;line-height:1.6}
+
+/* FORMULA BOX */
+.formula{background:var(--purple);color:#fff;padding:18px 24px;border-radius:12px;
+  text-align:center;font-size:1.3rem;font-weight:900;margin:20px 0;
+  box-shadow:0 4px 16px rgba(124,58,237,.3)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .container{padding:30px 20px 60px}
+  .section{padding:24px 20px}
+  .comparison{grid-template-columns:1fr}
+  .fruit-items{font-size:1.4rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <span class="kr">대박</span> Daebak
+  </a>
+  <a href="ratios-home.html" class="nav-back">← Back to Ratios</a>
+</nav>
+
+<div class="container">
+  
+  <div class="page-header">
+    <h1><span class="emoji">🔢</span> Learn Ratios</h1>
+    <p>
+      Understand what ratios really mean from first principles. 
+      Not just "two numbers with a colon" - but relationships that stay constant!
+    </p>
+  </div>
+
+  <!-- SECTION 1: WHAT IS A RATIO? -->
+  <div class="section">
+    <h2><span class="emoji">🍓</span> What IS a Ratio?</h2>
+    <p class="subtitle">Let's start with something concrete: making fruit bowls!</p>
+
+    <p>
+      Imagine you're making fruit bowls for a party. Your recipe says:
+    </p>
+
+    <div class="fruit-visual">
+      <div class="fruit-row">
+        <div class="fruit-label">Strawberries:</div>
+        <div class="fruit-items">🍓 🍓 🍓 🍓 🍓 🍓 🍓 🍓</div>
+      </div>
+      <div class="fruit-row">
+        <div class="fruit-label">Raspberries:</div>
+        <div class="fruit-items">🫐 🫐 🫐 🫐 🫐 🫐 🫐 🫐 🫐 🫐 🫐 🫐</div>
+      </div>
+      
+      <div class="ratio-display">
+        <div class="label">This creates a ratio:</div>
+        <div class="ratio">8 : 12</div>
+        <div class="meaning">"For every 8 strawberries, we use 12 raspberries"</div>
+      </div>
+    </div>
+
+    <div class="think-prompt">
+      <div class="think-prompt-title">🤔 Think About It:</div>
+      <ul>
+        <li>A ratio is a <strong>comparison</strong> between two quantities</li>
+        <li>It shows a <strong>relationship</strong> - not just random numbers</li>
+        <li><strong>Order matters!</strong> 8:12 is different from 12:8</li>
+        <li>The ratio tells us the "recipe" for our fruit bowl</li>
+      </ul>
+    </div>
+
+    <h3>Three Ways to Write Ratios</h3>
+    <p>You can write the same ratio in three different ways:</p>
+
+    <div class="notation-box">
+      <h4>All three mean the same thing!</h4>
+      <div class="notation-item">
+        <span class="format">8 : 12</span>
+        <span class="name">With a colon</span>
+      </div>
+      <div class="notation-item">
+        <span class="format">8 to 12</span>
+        <span class="name">With the word "to"</span>
+      </div>
+      <div class="notation-item">
+        <span class="format">8/12</span>
+        <span class="name">As a fraction</span>
+      </div>
+    </div>
+
+    <div class="insight">
+      <div class="insight-title">💡 Key Understanding</div>
+      <p>
+        A ratio is NOT just two numbers. It's a <strong>relationship</strong> that describes 
+        how quantities compare to each other. When we say 8:12, we're describing a pattern 
+        that we can scale up or down while keeping the same "taste" of our fruit bowl!
+      </p>
+    </div>
+  </div>
+
+  <!-- SECTION 2: EQUIVALENT RATIOS -->
+  <div class="section">
+    <h2><span class="emoji">📊</span> Equivalent Ratios</h2>
+    <p class="subtitle">The relationship stays the same when you scale!</p>
+
+    <p>
+      What if we need to make more fruit bowls? Let's see what happens when we 
+      double, triple, or quadruple our recipe:
+    </p>
+
+    <div class="interactive-table">
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Bowls</th>
+              <th>Strawberries</th>
+              <th>Raspberries</th>
+              <th>Ratio</th>
+              <th>Simplified</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>4</td>
+              <td>6</td>
+              <td>4:6</td>
+              <td class="highlight">2:3</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>8</td>
+              <td>12</td>
+              <td>8:12</td>
+              <td class="highlight">2:3</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>12</td>
+              <td>18</td>
+              <td>12:18</td>
+              <td class="highlight">2:3</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>16</td>
+              <td>24</td>
+              <td>16:24</td>
+              <td class="highlight">2:3</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>20</td>
+              <td>30</td>
+              <td>20:30</td>
+              <td class="highlight">2:3</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="think-prompt">
+      <div class="think-prompt-title">🤔 What Do You Notice?</div>
+      <ul>
+        <li>When we double the bowls, we double <strong>BOTH</strong> ingredients</li>
+        <li>The numbers change, but the <strong>relationship</strong> stays the same</li>
+        <li>All these ratios simplify to <strong>2:3</strong></li>
+        <li>These are called <strong>equivalent ratios</strong></li>
+      </ul>
+    </div>
+
+    <div class="insight">
+      <div class="insight-title">💡 Key Understanding</div>
+      <p>
+        <strong>Equivalent ratios</strong> are different ways of expressing the same relationship. 
+        Just like ½ = 2/4 = 3/6 in fractions, the ratios 2:3 = 4:6 = 8:12 all describe 
+        the same "recipe." The fruit bowl tastes the same whether you make 1 or 100!
+      </p>
+    </div>
+
+    <p style="margin-top:24px">
+      <strong>Pattern:</strong> To create equivalent ratios, multiply (or divide) 
+      <strong>both</strong> numbers by the same amount.
+    </p>
+
+    <div class="formula">
+      2:3 = (2×4):(3×4) = 8:12
+    </div>
+  </div>
+
+  <!-- SECTION 3: SIMPLIFYING RATIOS -->
+  <div class="section">
+    <h2><span class="emoji">🎯</span> Simplifying Ratios</h2>
+    <p class="subtitle">Find the smallest numbers that show the same relationship</p>
+
+    <p>
+      Just like reducing fractions, we can simplify ratios to make them easier to understand. 
+      Let's simplify 8:12 step by step:
+    </p>
+
+    <div class="simplify-demo">
+      <div class="simplify-step">
+        <div class="ratio-big">8 : 12</div>
+        <div class="explanation">Original ratio</div>
+      </div>
+      
+      <div class="arrow-down">↓ (divide both by 2)</div>
+      
+      <div class="simplify-step">
+        <div class="ratio-big">4 : 6</div>
+        <div class="explanation">8÷2 = 4 and 12÷2 = 6</div>
+      </div>
+      
+      <div class="arrow-down">↓ (divide both by 2 again)</div>
+      
+      <div class="simplify-step">
+        <div class="ratio-big">2 : 3</div>
+        <div class="explanation">4÷2 = 2 and 6÷2 = 3 — Simplest form! ✓</div>
+      </div>
+    </div>
+
+    <h3>How to Simplify Any Ratio</h3>
+    <div class="think-prompt">
+      <div class="think-prompt-title">📝 Step-by-Step Process:</div>
+      <ul>
+        <li><strong>Step 1:</strong> Find a common factor of both numbers</li>
+        <li><strong>Step 2:</strong> Divide BOTH numbers by that factor</li>
+        <li><strong>Step 3:</strong> Repeat until you can't divide evenly anymore</li>
+        <li><strong>Step 4:</strong> You've found the simplest form!</li>
+      </ul>
+    </div>
+
+    <div class="insight">
+      <div class="insight-title">💡 Why Simplify?</div>
+      <p>
+        Simplifying makes the relationship <strong>easier to see</strong>. 
+        "2:3" is much clearer than "8:12" - it immediately tells you 
+        "for every 2 strawberries, use 3 raspberries." Same relationship, 
+        simpler numbers!
+      </p>
+      <p style="margin-top:12px">
+        <strong>Think of it like this:</strong> Would you rather follow a recipe that says 
+        "2 cups flour to 3 cups water" or "8 cups flour to 12 cups water"? 
+        Same ratio, but 2:3 is easier to remember and work with!
+      </p>
+    </div>
+  </div>
+
+  <!-- SECTION 4: SCALING RATIOS -->
+  <div class="section">
+    <h2><span class="emoji">⚖️</span> Scaling Ratios Up and Down</h2>
+    <p class="subtitle">The power of ratios - multiply or divide to scale!</p>
+
+    <p>
+      Once you know the simplest form of a ratio, you can easily scale it to any size. 
+      Let's say our simplest ratio is <strong>2:3</strong> (strawberries to raspberries).
+    </p>
+
+    <h3>Scaling UP (Making More)</h3>
+    <p>Need to make 10 bowls? Multiply both sides by 5:</p>
+    <div class="formula">
+      2:3 → (2×5):(3×5) = 10:15
+    </div>
+    <p style="text-align:center;color:var(--muted);font-size:.9rem;margin-top:8px">
+      You need 10 strawberries and 15 raspberries
+    </p>
+
+    <h3 style="margin-top:32px">Scaling DOWN (Making Less)</h3>
+    <p>Have a ratio of 10:15 but only need half? Divide both sides by 5:</p>
+    <div class="formula">
+      10:15 → (10÷5):(15÷5) = 2:3
+    </div>
+    <p style="text-align:center;color:var(--muted);font-size:.9rem;margin-top:8px">
+      Back to our simplest form!
+    </p>
+
+    <div class="interactive-table" style="margin-top:32px">
+      <h4 style="margin-bottom:16px;text-align:center">Scaling Examples</h4>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Original Ratio</th>
+              <th>Operation</th>
+              <th>New Ratio</th>
+              <th>Meaning</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2:3</td>
+              <td>×2</td>
+              <td>4:6</td>
+              <td>Double the recipe</td>
+            </tr>
+            <tr>
+              <td>2:3</td>
+              <td>×3</td>
+              <td>6:9</td>
+              <td>Triple the recipe</td>
+            </tr>
+            <tr>
+              <td>2:3</td>
+              <td>×10</td>
+              <td>20:30</td>
+              <td>Make 10 times as much</td>
+            </tr>
+            <tr>
+              <td>20:30</td>
+              <td>÷10</td>
+              <td>2:3</td>
+              <td>Scale back down</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="insight">
+      <div class="insight-title">💡 The Golden Rule</div>
+      <p>
+        <strong>Always multiply or divide BOTH sides by the same number.</strong> 
+        This keeps the relationship constant. Think of it like a balanced scale - 
+        whatever you do to one side, you must do to the other to keep it balanced!
+      </p>
+    </div>
+  </div>
+
+  <!-- SECTION 5: COMMON MISTAKES -->
+  <div class="section">
+    <h2><span class="emoji">⚠️</span> Common Mistakes to Avoid</h2>
+    <p class="subtitle">Learn what NOT to do!</p>
+
+    <div class="warning">
+      <div class="warning-title">❌ DANGER: Don't Add or Subtract!</div>
+      <p>
+        The most common mistake is thinking you can add or subtract the same number 
+        to both sides of a ratio. <strong>This BREAKS the relationship!</strong>
+      </p>
+
+      <div class="comparison">
+        <div class="comp-box wrong">
+          <div class="comp-label wrong">❌ WRONG</div>
+          <div class="comp-math">2:3</div>
+          <div class="comp-math">↓ add 5 to both</div>
+          <div class="comp-math">7:8</div>
+          <div class="comp-result">This is NOT equivalent!</div>
+        </div>
+
+        <div class="comp-box right">
+          <div class="comp-label right">✅ CORRECT</div>
+          <div class="comp-math">2:3</div>
+          <div class="comp-math">↓ multiply both by 5</div>
+          <div class="comp-math">10:15</div>
+          <div class="comp-result">This IS equivalent!</div>
+        </div>
+      </div>
+
+      <p style="margin-top:20px">
+        <strong>Why does adding break it?</strong> Let's see with our fruit bowls:
+      </p>
+      <ul style="margin-left:20px;margin-top:12px">
+        <li style="margin:8px 0">
+          Original: 2 strawberries for every 3 raspberries (ratio 2:3)
+        </li>
+        <li style="margin:8px 0">
+          If we add 5 to both: 7 strawberries for every 8 raspberries (ratio 7:8)
+        </li>
+        <li style="margin:8px 0">
+          <strong>These taste different!</strong> 2:3 ≈ 0.67, but 7:8 ≈ 0.875
+        </li>
+      </ul>
+    </div>
+
+    <h3 style="margin-top:32px">Other Common Mistakes:</h3>
+    
+    <div class="think-prompt">
+      <div class="think-prompt-title">⚠️ Watch Out For:</div>
+      <ul>
+        <li><strong>Mixing up the order:</strong> 2:3 is NOT the same as 3:2</li>
+        <li><strong>Forgetting units:</strong> Always know what you're comparing</li>
+        <li><strong>Not simplifying:</strong> 8:12 works, but 2:3 is clearer</li>
+        <li><strong>Dividing when you can't:</strong> 5:7 is already simplest (no common factors)</li>
+      </ul>
+    </div>
+
+    <div class="insight">
+      <div class="insight-title">💡 Remember</div>
+      <p>
+        Ratios show <strong>multiplicative relationships</strong>, not additive ones. 
+        When you double a recipe, you multiply everything by 2. You don't add 2 to everything!
+      </p>
+      <p style="margin-top:12px">
+        <strong>Think:</strong> If a recipe calls for 2 cups of flour and you want to double it, 
+        you use 4 cups (2×2), not 4 cups (2+2). The same logic applies to ratios!
+      </p>
+    </div>
+  </div>
+
+  <!-- SECTION 6: SUMMARY -->
+  <div class="section">
+    <h2><span class="emoji">📚</span> Summary: What You've Learned</h2>
+    
+    <div class="think-prompt">
+      <div class="think-prompt-title">✓ Key Takeaways:</div>
+      <ul>
+        <li><strong>Ratios are relationships</strong> between quantities, not just numbers</li>
+        <li><strong>Order matters:</strong> 2:3 is different from 3:2</li>
+        <li><strong>Three ways to write:</strong> 2:3, 2 to 3, or 2/3</li>
+        <li><strong>Equivalent ratios:</strong> Same relationship, different numbers (like 2:3 = 4:6 = 8:12)</li>
+        <li><strong>Simplify by dividing:</strong> Find common factors and divide both sides</li>
+        <li><strong>Scale by multiplying:</strong> Multiply or divide both sides by the same number</li>
+        <li><strong>Never add or subtract:</strong> This breaks the relationship!</li>
+      </ul>
+    </div>
+
+    <div class="insight" style="margin-top:24px">
+      <div class="insight-title">🎯 Can You Explain It?</div>
+      <p>
+        The best way to know you understand is to teach someone else! 
+        Can you explain to a friend or family member:
+      </p>
+      <ul style="margin-left:20px;margin-top:12px">
+        <li style="margin:8px 0">What a ratio really means?</li>
+        <li style="margin:8px 0">Why 2:3 and 8:12 are equivalent?</li>
+        <li style="margin:8px 0">Why you multiply (not add) to scale ratios?</li>
+      </ul>
+      <p style="margin-top:12px">
+        If you can explain these concepts clearly, you truly understand ratios! 🎉
+      </p>
+    </div>
+  </div>
+
+  <!-- NEXT STEPS -->
+  <div class="section" style="background:linear-gradient(135deg,#f5f3ff 0%,#ede9fe 100%);border-color:var(--purple)">
+    <h2><span class="emoji">🚀</span> Ready to Practice?</h2>
+    <p>
+      Now that you understand WHY ratios work, it's time to practice! 
+      Head to the practice problems to apply what you've learned.
+    </p>
+    <div style="text-align:center;margin-top:24px">
+      <a href="practice-ratios.html" style="display:inline-block;background:var(--orange);color:#fff;
+        padding:14px 32px;border-radius:99px;text-decoration:none;font-weight:700;
+        font-size:1rem;transition:all .2s;box-shadow:0 4px 16px rgba(245,158,11,.3)">
+        Start Practice Problems →
+      </a>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

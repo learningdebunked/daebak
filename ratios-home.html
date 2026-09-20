@@ -45,23 +45,51 @@ nav{position:sticky;top:0;z-index:100;background:rgba(13,6,24,.96);backdrop-filt
 /* CONTAINER */
 .container{max-width:1000px;margin:0 auto;padding:50px 24px 80px}
 
-/* COMING SOON */
-.coming-soon{background:#fff;border-radius:var(--r);padding:60px 40px;
-  text-align:center;border:2px solid var(--border);box-shadow:var(--card-sh)}
-.coming-soon-icon{font-size:4rem;margin-bottom:20px}
-.coming-soon h2{font-size:2rem;font-weight:900;margin-bottom:12px;color:var(--text)}
-.coming-soon p{font-size:1.05rem;color:var(--muted);margin-bottom:28px;line-height:1.7;
-  max-width:500px;margin-left:auto;margin-right:auto}
-.preview-list{list-style:none;max-width:400px;margin:0 auto 32px;text-align:left}
-.preview-list li{padding:12px 0;border-bottom:1px solid var(--border);
-  display:flex;align-items:center;gap:12px;font-size:.95rem}
-.preview-list li:last-child{border-bottom:none}
-.preview-list li::before{content:'✓';color:var(--orange);font-weight:900;
-  font-size:1.2rem;flex-shrink:0}
-.btn-back{background:var(--orange);color:#fff;text-decoration:none;
-  padding:14px 32px;border-radius:99px;font-size:1rem;font-weight:700;
-  display:inline-block;transition:all .2s}
-.btn-back:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(245,158,11,.3)}
+/* LEARNING PATH */
+.learning-path{margin-bottom:50px}
+.section-title{font-size:1.8rem;font-weight:900;margin-bottom:10px;
+  letter-spacing:-.5px;color:var(--text)}
+.section-sub{font-size:.95rem;color:var(--muted);margin-bottom:32px;line-height:1.7}
+
+.path-steps{display:grid;gap:20px}
+.path-step{background:#fff;border-radius:var(--r);padding:24px;
+  border:2px solid var(--border);box-shadow:var(--card-sh);
+  transition:all .2s;position:relative;overflow:hidden}
+.path-step::before{content:'';position:absolute;left:0;top:0;bottom:0;
+  width:5px;background:var(--step-color);transition:width .2s}
+.path-step:hover{transform:translateX(4px);box-shadow:0 6px 24px rgba(245,158,11,.18);
+  border-color:var(--step-color)}
+.path-step:hover::before{width:8px}
+
+.step-header{display:flex;align-items:center;gap:16px;margin-bottom:12px}
+.step-num{background:var(--step-color);color:#fff;font-size:.85rem;
+  font-weight:900;width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-title{font-size:1.3rem;font-weight:800;color:var(--text);letter-spacing:-.3px}
+.step-desc{font-size:.95rem;color:var(--muted);margin-bottom:16px;line-height:1.65}
+.step-link{display:inline-flex;align-items:center;gap:6px;
+  background:var(--step-color);color:#fff;text-decoration:none;
+  padding:10px 20px;border-radius:99px;font-size:.9rem;font-weight:700;
+  transition:all .2s}
+.step-link:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.2)}
+.step-link.disabled{background:var(--muted);cursor:not-allowed;opacity:.6}
+
+.step-1{--step-color:#10b981}
+.step-2{--step-color:#f59e0b}
+.step-3{--step-color:#3b82f6}
+
+/* STATS */
+.stats-box{background:linear-gradient(135deg,#fef3c7 0%,#fed7aa 100%);
+  border-radius:var(--r);padding:28px;margin-top:40px;
+  border:2px solid #fbbf24}
+.stats-title{font-size:1.1rem;font-weight:800;color:#92400e;
+  margin-bottom:16px;text-align:center}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:16px}
+.stat{text-align:center}
+.stat-num{font-size:2rem;font-weight:900;color:var(--orange);display:block;line-height:1}
+.stat-label{font-size:.8rem;color:#92400e;font-weight:600;
+  text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
 
 /* FOOTER */
 .footer-nav{background:#fff;border-top:2px solid var(--border);padding:24px;
@@ -99,27 +127,80 @@ nav{position:sticky;top:0;z-index:100;background:rgba(13,6,24,.96);backdrop-filt
 
 <div class="container">
   
-  <div class="coming-soon">
-    <div class="coming-soon-icon">🚧</div>
-    <h2>Coming Very Soon!</h2>
-    <p>
-      We're building an amazing Ratios chapter with first-principles teaching, 
-      interactive examples, and comprehensive practice. Check back soon!
+  <div class="learning-path">
+    <h2 class="section-title">🎯 Your Learning Path</h2>
+    <p class="section-sub">
+      Follow these steps in order for the best learning experience. Start with understanding, 
+      then practice!
     </p>
-    
-    <ul class="preview-list">
-      <li>What ratios really mean (not just numbers!)</li>
-      <li>Equivalent ratios and simplifying</li>
-      <li>Scaling recipes up and down</li>
-      <li>Real-world word problems</li>
-      <li>Interactive practice with feedback</li>
-    </ul>
 
-    <p style="margin-bottom:24px;font-size:.9rem;color:var(--muted)">
-      In the meantime, master Chapter 1: Area!
-    </p>
-    
-    <a href="area-home.html" class="btn-back">Go to Chapter 1 →</a>
+    <div class="path-steps">
+      
+      <div class="path-step step-1">
+        <div class="step-header">
+          <div class="step-num">1</div>
+          <h3 class="step-title">💡 Learn What Ratios Really Mean</h3>
+        </div>
+        <p class="step-desc">
+          Don't just memorize! Understand from first principles what ratios are, why they work, 
+          and how to use them. Interactive examples with fruit bowls, tables, and visual demonstrations.
+        </p>
+        <a href="learn-ratios.html" class="step-link">
+          Start Learning →
+        </a>
+      </div>
+
+      <div class="path-step step-2">
+        <div class="step-header">
+          <div class="step-num">2</div>
+          <h3 class="step-title">🌍 See Real-World Examples</h3>
+        </div>
+        <p class="step-desc">
+          Connect ratios to everyday life! Recipes, paint mixing, sports statistics, and more. 
+          Understand where ratios matter in the real world.
+        </p>
+        <span class="step-link disabled">
+          Coming Soon
+        </span>
+      </div>
+
+      <div class="path-step step-3">
+        <div class="step-header">
+          <div class="step-num">3</div>
+          <h3 class="step-title">📝 Practice Problems</h3>
+        </div>
+        <p class="step-desc">
+          Apply what you've learned! Solve word problems from your worksheet with detailed explanations. 
+          Fruit bowls, salad recipes, paint mixing, and more.
+        </p>
+        <span class="step-link disabled">
+          Coming in Phase 3
+        </span>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="stats-box">
+    <div class="stats-title">📊 Chapter 2 Content</div>
+    <div class="stats-grid">
+      <div class="stat">
+        <span class="stat-num">5</span>
+        <span class="stat-label">Key Concepts</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">16+</span>
+        <span class="stat-label">Problems</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">3</span>
+        <span class="stat-label">Ways to Write</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">100%</span>
+        <span class="stat-label">Understanding</span>
+      </div>
+    </div>
   </div>
 
 </div>
