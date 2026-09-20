@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Interactive area practice problems for 6th grade math">
+<title>Area Practice — 대박 Daebak</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌟</text></svg>">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pink:#ff6b9d;--pink-l:#ffe4ef;--purple:#7c3aed;--purp-l:#a78bfa;
+  --purp-bg:#f5f3ff;--hero:#0d0618;
+  --surface:#fff;--text:#1a0a2e;--muted:#64748b;--border:#e8e4f4;
+  --green:#10b981;--green-l:#d1fae5;
+  --red:#ef4444;--red-l:#fee2e2;
+  --r:14px;
+}
+html{scroll-behavior:smooth;height:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:var(--purp-bg);color:var(--text);line-height:1.6;min-height:100vh}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(13,6,24,.96);backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,107,157,.18);padding:0 24px;
+  display:flex;align-items:center;justify-content:space-between;height:58px}
+.nav-logo{font-size:1.25rem;font-weight:900;color:#fff;text-decoration:none;
+  display:flex;align-items:center;gap:7px;letter-spacing:-.3px}
+.nav-logo .kr{color:var(--pink)}
+.nav-back{color:rgba(255,255,255,.7);text-decoration:none;font-size:.9rem;
+  padding:6px 14px;border-radius:20px;transition:all .15s;display:flex;align-items:center;gap:6px}
+.nav-back:hover{color:#fff;background:rgba(255,255,255,.1)}
+
+/* CONTAINER */
+.container{max-width:880px;margin:0 auto;padding:40px 24px}
+
+/* HEADER */
+.header{text-align:center;margin-bottom:40px}
+.header h1{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:900;
+  letter-spacing:-.8px;margin-bottom:12px}
+.header h1 .pk{color:var(--pink)}
+.header p{color:var(--muted);font-size:1rem;margin-bottom:20px}
+.progress-bar{background:#e5e7eb;height:10px;border-radius:99px;overflow:hidden;max-width:400px;margin:0 auto}
+.progress-fill{background:linear-gradient(90deg,var(--pink),var(--purple));
+  height:100%;width:0%;transition:width .4s ease;border-radius:99px}
+.score{margin-top:12px;font-size:.9rem;font-weight:700;color:var(--purple)}
+
+/* PROBLEM CARD */
+.problem{background:#fff;border-radius:var(--r);padding:32px 28px;
+  border:1.5px solid var(--border);box-shadow:0 4px 20px rgba(124,58,237,.1);
+  margin-bottom:24px;display:none}
+.problem.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.prob-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.prob-num{font-size:.8rem;font-weight:800;text-transform:uppercase;
+  letter-spacing:1px;color:var(--purple)}
+.diff{padding:4px 12px;border-radius:99px;font-size:.75rem;font-weight:700}
+.diff.easy{background:#d1fae5;color:#065f46}
+.diff.medium{background:#fef3c7;color:#92400e}
+.diff.hard{background:#fee2e2;color:#991b1b}
+.prob-q{font-size:1.15rem;font-weight:700;margin-bottom:20px;line-height:1.6}
+.diagram{background:#f8f7ff;border-radius:12px;padding:24px;margin:20px 0;text-align:center}
+.diagram svg{max-width:100%;height:auto}
+.answer-box{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:24px}
+.answer-box input{flex:1;min-width:200px;padding:14px 18px;border:2px solid var(--border);
+  border-radius:12px;font-size:1.05rem;font-weight:600;transition:all .2s}
+.answer-box input:focus{outline:none;border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,58,237,.1)}
+.btn{padding:14px 28px;border-radius:99px;font-size:.95rem;font-weight:700;
+  cursor:pointer;border:none;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.btn-check{background:var(--purple);color:#fff}
+.btn-check:hover{background:#6d28d9;transform:translateY(-2px)}
+.btn-check:disabled{background:#cbd5e1;cursor:not-allowed;transform:none}
+.btn-next{background:var(--pink);color:#fff}
+.btn-next:hover{background:#ff5a8a;transform:translateY(-2px)}
+
+/* FEEDBACK */
+.feedback{margin-top:20px;padding:16px 20px;border-radius:12px;display:none;animation:slideDown .3s ease}
+@keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.feedback.show{display:block}
+.feedback.correct{background:var(--green-l);border:2px solid var(--green);color:#065f46}
+.feedback.wrong{background:var(--red-l);border:2px solid var(--red);color:#991b1b}
+.feedback-title{font-weight:800;font-size:1.05rem;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.feedback-text{font-size:.95rem;line-height:1.6}
+.feedback-text strong{font-weight:700}
+
+/* RESULTS */
+.results{background:#fff;border-radius:var(--r);padding:40px 32px;
+  border:1.5px solid var(--border);box-shadow:0 4px 20px rgba(124,58,237,.1);
+  text-align:center;display:none}
+.results.show{display:block;animation:fadeIn .5s ease}
+.results-emoji{font-size:80px;margin-bottom:16px}
+.results h2{font-size:2rem;font-weight:900;margin-bottom:12px;color:var(--purple)}
+.results-score{font-size:3.5rem;font-weight:900;color:var(--pink);margin-bottom:8px}
+.results-msg{font-size:1.1rem;color:var(--muted);margin-bottom:32px}
+.results-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:16px;margin-bottom:32px}
+.stat-box{background:var(--purp-bg);padding:16px;border-radius:12px}
+.stat-num{font-size:1.8rem;font-weight:900;color:var(--purple);display:block}
+.stat-label{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.btn-restart{background:var(--pink);color:#fff;text-decoration:none;
+  padding:14px 32px;border-radius:99px;font-weight:700;display:inline-block;margin-right:12px}
+.btn-restart:hover{background:#ff5a8a;transform:translateY(-2px)}
+.btn-home{background:#fff;color:var(--purple);border:2px solid var(--purple);
+  text-decoration:none;padding:12px 32px;border-radius:99px;font-weight:700;display:inline-block}
+.btn-home:hover{background:var(--purp-bg)}
+
+@media(max-width:600px){
+  .container{padding:24px 16px}
+  .problem{padding:24px 18px}
+  .answer-box{flex-direction:column}
+  .answer-box input{min-width:100%}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo"><span class="kr">대박</span> Daebak</a>
+  <a href="index.html#math" class="nav-back">← Back to Math</a>
+</nav>
+
+<div class="container">
+  <div class="header">
+    <h1><span class="pk">Area Practice</span> Problems</h1>
+    <p>10 problems • Start easy, finish strong 💪</p>
+    <div class="progress-bar"><div class="progress-fill" id="progressBar"></div></div>
+    <div class="score" id="scoreDisplay">Score: 0/0</div>
+  </div>
+
+  <!-- Problems will be generated here -->
+  <div id="problemsContainer"></div>
+
+  <!-- Results -->
+  <div class="results" id="results">
+    <div class="results-emoji" id="resultsEmoji">🎉</div>
+    <h2>Practice Complete!</h2>
+    <div class="results-score" id="finalScore">0/10</div>
+    <p class="results-msg" id="resultsMsg">Great work!</p>
+    <div class="results-stats">
+      <div class="stat-box">
+        <span class="stat-num" id="correctCount">0</span>
+        <span class="stat-label">Correct</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num" id="wrongCount">0</span>
+        <span class="stat-label">Wrong</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num" id="accuracy">0%</span>
+        <span class="stat-label">Accuracy</span>
+      </div>
+    </div>
+    <a href="practice.html" class="btn-restart">Try Again 🔄</a>
+    <a href="index.html#math" class="btn-home">Back to Math</a>
+  </div>
+</div>
+
+  <div class="header">
+    <h1><span class="pk">Olympiad Challenge</span> Problems</h1>
+    <p>10 advanced problems • Math competition level 🏆</p>
+    <div class="progress-bar"><div class="progress-fill" id="progressBar"></div></div>
+    <div class="score" id="scoreDisplay">Score: 0/0</div>
+  </div>
+
+  <div id="problemsContainer"></div>
+
+  <div class="results" id="results">
+    <div class="results-emoji" id="resultsEmoji">🎉</div>
+    <h2>Olympiad Complete!</h2>
+    <div class="results-score" id="finalScore">0/10</div>
+    <p class="results-msg" id="resultsMsg">Amazing work!</p>
+    <div class="results-stats">
+      <div class="stat-box"><span class="stat-num" id="correctCount">0</span><span class="stat-label">Correct</span></div>
+      <div class="stat-box"><span class="stat-num" id="wrongCount">0</span><span class="stat-label">Wrong</span></div>
+      <div class="stat-box"><span class="stat-num" id="accuracy">0%</span><span class="stat-label">Accuracy</span></div>
+    </div>
+    <a href="practice-olympiad.html" class="btn-restart">Try Again 🔄</a>
+    <a href="practice.html" class="btn-home">Main Practice</a>
+    <a href="index.html#math" class="btn-home" style="margin-left:8px">Back to Math</a>
+  </div>
+</div>
+
+<script>
+// Olympiad problems data
+const olympiadProblems = [
+  {
+    num: 1,
+    diff: 'hard',
+    title: 'Triangle Inscribed in Rectangle',
+    question: 'Rectangle ABCD is 12 cm × 8 cm. M is the midpoint of BC and N is the midpoint of CD. Find the area of triangle AMN.',
+    hint: 'Find the area of the rectangle, then subtract the three corner triangles that are NOT part of triangle AMN.',
+    answer: 36,
+    unit: 'cm²',
+    explanation: 'Rectangle area = 96 cm². Triangle ABM = ½×12×4 = 24 cm². Triangle MNC = ½×6×4 = 12 cm². Triangle AND = ½×8×6 = 24 cm². Area AMN = 96 - 24 - 12 - 24 = <strong>36 cm²</strong>'
+  },
+  {
+    num: 2,
+    diff: 'hard',
+    title: 'Parallel Line Division',
+    question: 'A triangle has base 20 cm and height 15 cm (area = 150 cm²). A line parallel to the base divides it so the top piece = ¼ of total area. How far from the apex is the line?',
+    hint: 'Similar triangles: if area ratio = 1/4, then linear scale = √(1/4) = 1/2',
+    answer: 7.5,
+    unit: 'cm',
+    explanation: 'Top triangle area = ¼ × 150 = 37.5 cm². For similar triangles, if area ratio = 1/4, linear scale = √(1/4) = 1/2. Height of small triangle = ½ × 15 = <strong>7.5 cm</strong>'
+  },
+  {
+    num: 3,
+    diff: 'hard',
+    title: 'The Plus/Cross Shape',
+    question: 'Two rectangles form a plus sign. Horizontal: 20 cm × 6 cm. Vertical: 6 cm × 20 cm. They share a 6 cm × 6 cm square in the centre. What is the total area of the cross?',
+    hint: 'Add both rectangles, but subtract the overlap (the center square was counted twice).',
+    answer: 204,
+    unit: 'cm²',
+    explanation: 'Horizontal = 20 × 6 = 120 cm². Vertical = 6 × 20 = 120 cm². Overlap = 6 × 6 = 36 cm². Total = 120 + 120 - 36 = <strong>204 cm²</strong>'
+  },
+  {
+    num: 4,
+    diff: 'hard',
+    title: 'L-Tromino: Perimeter → Area',
+    question: 'Three squares arranged in an L-shape (2 on the bottom, 1 stacked on the left). The total perimeter is 56 cm. What is the total area?',
+    hint: 'Count the exposed edges carefully. The L-shape has 8 sides of length s.',
+    answer: 147,
+    unit: 'cm²',
+    explanation: 'The L-shape has 8 exposed sides. 8s = 56, so s = 7 cm. Area of 3 squares = 3 × 7² = 3 × 49 = <strong>147 cm²</strong>'
+  },
+  {
+    num: 5,
+    diff: 'hard',
+    title: 'Pick\'s Theorem',
+    question: 'A polygon on dot paper has 8 interior dots and 12 boundary dots. Using Pick\'s Theorem: Area = I + B/2 − 1. Find the area.',
+    hint: 'I = interior dots, B = boundary dots. Just plug into the formula!',
+    answer: 13,
+    unit: 'sq units',
+    explanation: 'Area = I + B/2 - 1 = 8 + 12/2 - 1 = 8 + 6 - 1 = <strong>13 square units</strong>'
+  },
+  {
+    num: 6,
+    diff: 'hard',
+    title: 'Union of Overlapping Rectangles',
+    question: 'Rectangle A is 10 cm × 6 cm. Rectangle B is 8 cm × 5 cm. They overlap in a 3 cm × 4 cm region. What total area do they cover (no double-counting)?',
+    hint: 'Use inclusion-exclusion: A ∪ B = A + B - (A ∩ B)',
+    answer: 88,
+    unit: 'cm²',
+    explanation: 'Area A = 10 × 6 = 60 cm². Area B = 8 × 5 = 40 cm². Overlap = 3 × 4 = 12 cm². Total = 60 + 40 - 12 = <strong>88 cm²</strong>'
+  },
+  {
+    num: 7,
+    diff: 'hard',
+    title: 'Algebra + Trapezoid',
+    question: 'A trapezoid has parallel sides where one is 3 cm longer than the other and a height of 8 cm. If the total area is 100 cm², find the length of the shorter side.',
+    hint: 'Let shorter side = x. Set up equation: ½ × (x + x+3) × 8 = 100',
+    answer: 11,
+    unit: 'cm',
+    explanation: 'Let shorter = x, longer = x+3. Area = ½ × (x + x+3) × 8 = 100. Simplify: 4(2x+3) = 100, so 2x+3 = 25, thus 2x = 22, x = <strong>11 cm</strong>'
+  },
+  {
+    num: 8,
+    diff: 'hard',
+    title: 'Rectangle from Perimeter + Constraint',
+    question: 'A rectangle has perimeter 44 cm and its length is 4 cm more than its width. Find the area.',
+    hint: 'Perimeter = 2(l+w) = 44, so l+w = 22. Also l = w+4. Solve for w, then find area.',
+    answer: 117,
+    unit: 'cm²',
+    explanation: 'l + w = 22 and l = w+4. Substitute: (w+4) + w = 22, so 2w = 18, w = 9. Length = 13. Area = 9 × 13 = <strong>117 cm²</strong>'
+  },
+  {
+    num: 9,
+    diff: 'hard',
+    title: 'Area on a Coordinate Grid',
+    question: 'Triangle ABC has vertices A(0,0), B(8,2), C(3,7). Use: Area = ½|x_A(y_B−y_C) + x_B(y_C−y_A) + x_C(y_A−y_B)|',
+    hint: 'Carefully plug in the coordinates. Watch the signs!',
+    answer: 25,
+    unit: 'sq units',
+    explanation: '½|0×(2-7) + 8×(7-0) + 3×(0-2)| = ½|0 + 56 - 6| = ½ × 50 = <strong>25 square units</strong>'
+  },
+  {
+    num: 10,
+    diff: 'hard',
+    title: 'Point Inside a Parallelogram',
+    question: 'Parallelogram ABCD has area 240 cm². P lies on diagonal AC with AP = ⅓ of AC. Find the area of triangle ABP.',
+    hint: 'Diagonal AC divides parallelogram into 2 equal triangles. Triangle ABP shares the same height from B as triangle ABC.',
+    answer: 40,
+    unit: 'cm²',
+    explanation: 'Triangle ABC = 240 ÷ 2 = 120 cm². Triangles ABP and ABC share vertex B with same height. Area ratio = base ratio = AP/AC = 1/3. Area(ABP) = 120 × (1/3) = <strong>40 cm²</strong>'
+  }
+];
+
+let currentProblem = 0;
+let score = 0;
+let answered = false;
+const problems = olympiadProblems;
+
+function renderProblem(index) {
+  const container = document.getElementById('problemsContainer');
+  const prob = problems[index];
+  
+  const html = `
+    <div class="problem active" id="problem${index}">
+      <div class="prob-header">
+        <span class="prob-num">Problem ${prob.num} of 10</span>
+        <span class="diff ${prob.diff}">${prob.diff.toUpperCase()}</span>
+      </div>
+      <h3 style="font-size:1.2rem;font-weight:800;margin-bottom:12px;color:var(--purple)">${prob.title}</h3>
+      <div class="prob-q">${prob.question}</div>
+      <div style="background:var(--orange-l);border-left:3px solid var(--orange);padding:12px 16px;border-radius:8px;margin:16px 0;font-size:.9rem">
+        <strong>💡 Hint:</strong> ${prob.hint}
+      </div>
+      <div class="answer-box">
+        <input type="number" id="answer${index}" placeholder="Enter your answer" step="0.01">
+        <button class="btn btn-check" onclick="checkAnswer(${index})">Check Answer</button>
+      </div>
+      <div class="feedback" id="feedback${index}"></div>
+      <button class="btn btn-next" id="nextBtn${index}" style="display:none;margin-top:16px" onclick="nextProblem()">
+        ${index < problems.length - 1 ? 'Next Problem →' : 'See Results 🎉'}
+      </button>
+    </div>
+  `;
+  
+  container.innerHTML = html;
+  updateProgress();
+  document.getElementById(`answer${index}`).focus();
+  document.getElementById(`answer${index}`).addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' && !answered) checkAnswer(index);
+  });
+}
+
+function checkAnswer(index) {
+  if (answered) return;
+  const prob = problems[index];
+  const userAnswer = parseFloat(document.getElementById(`answer${index}`).value);
+  const feedback = document.getElementById(`feedback${index}`);
+  const checkBtn = document.querySelector(`#problem${index} .btn-check`);
+  const nextBtn = document.getElementById(`nextBtn${index}`);
+  
+  if (isNaN(userAnswer)) {
+    alert('Please enter a number!');
+    return;
+  }
+  
+  answered = true;
+  checkBtn.disabled = true;
+  nextBtn.style.display = 'inline-flex';
+  
+  const isCorrect = Math.abs(userAnswer - prob.answer) < 0.01;
+  
+  if (isCorrect) {
+    score++;
+    feedback.className = 'feedback correct show';
+    feedback.innerHTML = `<div class="feedback-title">✅ Correct!</div><div class="feedback-text">${prob.explanation}</div>`;
+  } else {
+    feedback.className = 'feedback wrong show';
+    feedback.innerHTML = `<div class="feedback-title">❌ Not quite</div><div class="feedback-text">The correct answer is <strong>${prob.answer} ${prob.unit}</strong>. ${prob.explanation}</div>`;
+  }
+  updateProgress();
+}
+
+function nextProblem() {
+  answered = false;
+  currentProblem++;
+  if (currentProblem < problems.length) {
+    renderProblem(currentProblem);
+  } else {
+    showResults();
+  }
+}
+
+function updateProgress() {
+  const progress = ((currentProblem + (answered ? 1 : 0)) / problems.length) * 100;
+  document.getElementById('progressBar').style.width = progress + '%';
+  document.getElementById('scoreDisplay').textContent = `Score: ${score}/${currentProblem + (answered ? 1 : 0)}`;
+}
+
+function showResults() {
+  document.getElementById('problemsContainer').style.display = 'none';
+  const results = document.getElementById('results');
+  const accuracy = Math.round((score / problems.length) * 100);
+  
+  let emoji = '🎉', message = 'Keep training!';
+  if (score === 10) {
+    emoji = '🏆';
+    message = 'Perfect Olympiad score! You\'re a champion! 대박!';
+  } else if (score >= 8) {
+    emoji = '🌟';
+    message = 'Outstanding! Olympiad-level performance!';
+  } else if (score >= 6) {
+    emoji = '💪';
+    message = 'Great work on these tough problems!';
+  } else if (score >= 4) {
+    emoji = '📚';
+    message = 'Good effort! These are challenging!';
+  } else {
+    emoji = '🎯';
+    message = 'Olympiad problems are tough! Keep practicing!';
+  }
+  
+  document.getElementById('resultsEmoji').textContent = emoji;
+  document.getElementById('finalScore').textContent = `${score}/10`;
+  document.getElementById('resultsMsg').textContent = message;
+  document.getElementById('correctCount').textContent = score;
+  document.getElementById('wrongCount').textContent = problems.length - score;
+  document.getElementById('accuracy').textContent = accuracy + '%';
+  results.classList.add('show');
+}
+
+renderProblem(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Interactive area practice problems for 6th grade math">
+<title>Area Practice — 대박 Daebak</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌟</text></svg>">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pink:#ff6b9d;--pink-l:#ffe4ef;--purple:#7c3aed;--purp-l:#a78bfa;
+  --purp-bg:#f5f3ff;--hero:#0d0618;
+  --surface:#fff;--text:#1a0a2e;--muted:#64748b;--border:#e8e4f4;
+  --green:#10b981;--green-l:#d1fae5;
+  --red:#ef4444;--red-l:#fee2e2;
+  --r:14px;
+}
+html{scroll-behavior:smooth;height:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:var(--purp-bg);color:var(--text);line-height:1.6;min-height:100vh}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(13,6,24,.96);backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,107,157,.18);padding:0 24px;
+  display:flex;align-items:center;justify-content:space-between;height:58px}
+.nav-logo{font-size:1.25rem;font-weight:900;color:#fff;text-decoration:none;
+  display:flex;align-items:center;gap:7px;letter-spacing:-.3px}
+.nav-logo .kr{color:var(--pink)}
+.nav-back{color:rgba(255,255,255,.7);text-decoration:none;font-size:.9rem;
+  padding:6px 14px;border-radius:20px;transition:all .15s;display:flex;align-items:center;gap:6px}
+.nav-back:hover{color:#fff;background:rgba(255,255,255,.1)}
+
+/* CONTAINER */
+.container{max-width:880px;margin:0 auto;padding:40px 24px}
+
+/* HEADER */
+.header{text-align:center;margin-bottom:40px}
+.header h1{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:900;
+  letter-spacing:-.8px;margin-bottom:12px}
+.header h1 .pk{color:var(--pink)}
+.header p{color:var(--muted);font-size:1rem;margin-bottom:20px}
+.progress-bar{background:#e5e7eb;height:10px;border-radius:99px;overflow:hidden;max-width:400px;margin:0 auto}
+.progress-fill{background:linear-gradient(90deg,var(--pink),var(--purple));
+  height:100%;width:0%;transition:width .4s ease;border-radius:99px}
+.score{margin-top:12px;font-size:.9rem;font-weight:700;color:var(--purple)}
+
+/* PROBLEM CARD */
+.problem{background:#fff;border-radius:var(--r);padding:32px 28px;
+  border:1.5px solid var(--border);box-shadow:0 4px 20px rgba(124,58,237,.1);
+  margin-bottom:24px;display:none}
+.problem.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.prob-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.prob-num{font-size:.8rem;font-weight:800;text-transform:uppercase;
+  letter-spacing:1px;color:var(--purple)}
+.diff{padding:4px 12px;border-radius:99px;font-size:.75rem;font-weight:700}
+.diff.easy{background:#d1fae5;color:#065f46}
+.diff.medium{background:#fef3c7;color:#92400e}
+.diff.hard{background:#fee2e2;color:#991b1b}
+.prob-q{font-size:1.15rem;font-weight:700;margin-bottom:20px;line-height:1.6}
+.diagram{background:#f8f7ff;border-radius:12px;padding:24px;margin:20px 0;text-align:center}
+.diagram svg{max-width:100%;height:auto}
+.answer-box{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:24px}
+.answer-box input{flex:1;min-width:200px;padding:14px 18px;border:2px solid var(--border);
+  border-radius:12px;font-size:1.05rem;font-weight:600;transition:all .2s}
+.answer-box input:focus{outline:none;border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,58,237,.1)}
+.btn{padding:14px 28px;border-radius:99px;font-size:.95rem;font-weight:700;
+  cursor:pointer;border:none;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.btn-check{background:var(--purple);color:#fff}
+.btn-check:hover{background:#6d28d9;transform:translateY(-2px)}
+.btn-check:disabled{background:#cbd5e1;cursor:not-allowed;transform:none}
+.btn-next{background:var(--pink);color:#fff}
+.btn-next:hover{background:#ff5a8a;transform:translateY(-2px)}
+
+/* FEEDBACK */
+.feedback{margin-top:20px;padding:16px 20px;border-radius:12px;display:none;animation:slideDown .3s ease}
+@keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.feedback.show{display:block}
+.feedback.correct{background:var(--green-l);border:2px solid var(--green);color:#065f46}
+.feedback.wrong{background:var(--red-l);border:2px solid var(--red);color:#991b1b}
+.feedback-title{font-weight:800;font-size:1.05rem;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.feedback-text{font-size:.95rem;line-height:1.6}
+.feedback-text strong{font-weight:700}
+
+/* RESULTS */
+.results{background:#fff;border-radius:var(--r);padding:40px 32px;
+  border:1.5px solid var(--border);box-shadow:0 4px 20px rgba(124,58,237,.1);
+  text-align:center;display:none}
+.results.show{display:block;animation:fadeIn .5s ease}
+.results-emoji{font-size:80px;margin-bottom:16px}
+.results h2{font-size:2rem;font-weight:900;margin-bottom:12px;color:var(--purple)}
+.results-score{font-size:3.5rem;font-weight:900;color:var(--pink);margin-bottom:8px}
+.results-msg{font-size:1.1rem;color:var(--muted);margin-bottom:32px}
+.results-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:16px;margin-bottom:32px}
+.stat-box{background:var(--purp-bg);padding:16px;border-radius:12px}
+.stat-num{font-size:1.8rem;font-weight:900;color:var(--purple);display:block}
+.stat-label{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.btn-restart{background:var(--pink);color:#fff;text-decoration:none;
+  padding:14px 32px;border-radius:99px;font-weight:700;display:inline-block;margin-right:12px}
+.btn-restart:hover{background:#ff5a8a;transform:translateY(-2px)}
+.btn-home{background:#fff;color:var(--purple);border:2px solid var(--purple);
+  text-decoration:none;padding:12px 32px;border-radius:99px;font-weight:700;display:inline-block}
+.btn-home:hover{background:var(--purp-bg)}
+
+@media(max-width:600px){
+  .container{padding:24px 16px}
+  .problem{padding:24px 18px}
+  .answer-box{flex-direction:column}
+  .answer-box input{min-width:100%}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo"><span class="kr">대박</span> Daebak</a>
+  <a href="index.html#math" class="nav-back">← Back to Math</a>
+</nav>
+
+<div class="container">
+  <div class="header">
+    <h1><span class="pk">Area Practice</span> Problems</h1>
+    <p>10 problems • Start easy, finish strong 💪</p>
+    <div class="progress-bar"><div class="progress-fill" id="progressBar"></div></div>
+    <div class="score" id="scoreDisplay">Score: 0/0</div>
+  </div>
+
+  <!-- Problems will be generated here -->
+  <div id="problemsContainer"></div>
+
+  <!-- Results -->
+  <div class="results" id="results">
+    <div class="results-emoji" id="resultsEmoji">🎉</div>
+    <h2>Practice Complete!</h2>
+    <div class="results-score" id="finalScore">0/10</div>
+    <p class="results-msg" id="resultsMsg">Great work!</p>
+    <div class="results-stats">
+      <div class="stat-box">
+        <span class="stat-num" id="correctCount">0</span>
+        <span class="stat-label">Correct</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num" id="wrongCount">0</span>
+        <span class="stat-label">Wrong</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num" id="accuracy">0%</span>
+        <span class="stat-label">Accuracy</span>
+      </div>
+    </div>
+    <a href="practice.html" class="btn-restart">Try Again 🔄</a>
+    <a href="index.html#math" class="btn-home">Back to Math</a>
+  </div>
+</div>
+
+  <div class="header">
+    <h1><span class="pk">Evening Practice</span> Session</h1>
+    <p>40 problems • 20 Medium • 20 Hard • Sharpen every formula! 🌙</p>
+    <div class="progress-bar"><div class="progress-fill" id="progressBar"></div></div>
+    <div class="score" id="scoreDisplay">Score: 0/0</div>
+  </div>
+
+  <div id="problemsContainer"></div>
+
+  <div class="results" id="results">
+    <div class="results-emoji" id="resultsEmoji">🎉</div>
+    <h2>Evening Practice Complete!</h2>
+    <div class="results-score" id="finalScore">0/40</div>
+    <p class="results-msg" id="resultsMsg">Great session!</p>
+    <div class="results-stats">
+      <div class="stat-box"><span class="stat-num" id="correctCount">0</span><span class="stat-label">Correct</span></div>
+      <div class="stat-box"><span class="stat-num" id="wrongCount">0</span><span class="stat-label">Wrong</span></div>
+      <div class="stat-box"><span class="stat-num" id="accuracy">0%</span><span class="stat-label">Accuracy</span></div>
+    </div>
+    <a href="practice-evening.html" class="btn-restart">Try Again 🔄</a>
+    <a href="practice.html" class="btn-home">Main Practice</a>
+    <a href="index.html#math" class="btn-home" style="margin-left:8px">Back to Math</a>
+  </div>
+</div>
+
+<script>
+const eveningProblems = [
+  // MEDIUM (M1-M20)
+  {num:1,diff:'medium',question:'Parallelogram: Base 11 in, perpendicular height 7 in, slant side 9 in.',answer:77,unit:'in²',explanation:'Area = base × height = 11 × 7 = <strong>77 in²</strong> (Don\'t use the slant side!)'},
+  {num:2,diff:'medium',question:'Triangle: Base 18 cm, height 14 cm.',answer:126,unit:'cm²',explanation:'Area = ½ × 18 × 14 = <strong>126 cm²</strong>'},
+  {num:3,diff:'medium',question:'Trapezoid: Top base 8 m, bottom 14 m, height 6 m.',answer:66,unit:'m²',explanation:'Area = ½ × (8+14) × 6 = ½ × 22 × 6 = <strong>66 m²</strong>'},
+  {num:4,diff:'medium',question:'Rectangle: Length 15.5 ft, width 8 ft.',answer:124,unit:'ft²',explanation:'Area = 15.5 × 8 = <strong>124 ft²</strong>'},
+  {num:5,diff:'medium',question:'Triangle: Base 20 yd, height 13 yd.',answer:130,unit:'yd²',explanation:'Area = ½ × 20 × 13 = <strong>130 yd²</strong>'},
+  {num:6,diff:'medium',question:'Parallelogram: Base 16 cm, perpendicular height 9 cm.',answer:144,unit:'cm²',explanation:'Area = 16 × 9 = <strong>144 cm²</strong>'},
+  {num:7,diff:'medium',question:'Trapezoid: Parallel sides 7.5 in and 12.5 in, height 8 in.',answer:80,unit:'in²',explanation:'Area = ½ × (7.5+12.5) × 8 = ½ × 20 × 8 = <strong>80 in²</strong>'},
+  {num:8,diff:'medium',question:'Rectangle: Length 22 m, width 6.5 m.',answer:143,unit:'m²',explanation:'Area = 22 × 6.5 = <strong>143 m²</strong>'},
+  {num:9,diff:'medium',question:'Triangle: Base 25 ft, height 10 ft.',answer:125,unit:'ft²',explanation:'Area = ½ × 25 × 10 = <strong>125 ft²</strong>'},
+  {num:10,diff:'medium',question:'Parallelogram: Base 13 cm, perpendicular height 11 cm, slant 15 cm.',answer:143,unit:'cm²',explanation:'Area = 13 × 11 = <strong>143 cm²</strong> (Ignore the slant!)'},
+  {num:11,diff:'medium',question:'Trapezoid: Parallel sides 5 yd and 11 yd, height 7 yd.',answer:56,unit:'yd²',explanation:'Area = ½ × (5+11) × 7 = ½ × 16 × 7 = <strong>56 yd²</strong>'},
+  {num:12,diff:'medium',question:'Rectangle: Length 4.5 m, width 3.2 m.',answer:14.4,unit:'m²',explanation:'Area = 4.5 × 3.2 = <strong>14.4 m²</strong>'},
+  {num:13,diff:'medium',question:'Triangle: Base 16 in, height 9 in.',answer:72,unit:'in²',explanation:'Area = ½ × 16 × 9 = <strong>72 in²</strong>'},
+  {num:14,diff:'medium',question:'Trapezoid: Parallel sides 9 cm and 15 cm, height 8 cm.',answer:96,unit:'cm²',explanation:'Area = ½ × (9+15) × 8 = ½ × 24 × 8 = <strong>96 cm²</strong>'},
+  {num:15,diff:'medium',question:'Find the Height: Parallelogram area = 120 m², base = 15 m. Find the perpendicular height.',answer:8,unit:'m',explanation:'Area = base × height, so 120 = 15 × h, thus h = 120 ÷ 15 = <strong>8 m</strong>'},
+  {num:16,diff:'medium',question:'Triangle: Base 30 ft, height 22 ft.',answer:330,unit:'ft²',explanation:'Area = ½ × 30 × 22 = <strong>330 ft²</strong>'},
+  {num:17,diff:'medium',question:'Rectangle: Length 100 m, width 0.75 m.',answer:75,unit:'m²',explanation:'Area = 100 × 0.75 = <strong>75 m²</strong>'},
+  {num:18,diff:'medium',question:'Trapezoid: Parallel sides 12 yd and 20 yd, height 9 yd.',answer:144,unit:'yd²',explanation:'Area = ½ × (12+20) × 9 = ½ × 32 × 9 = <strong>144 yd²</strong>'},
+  {num:19,diff:'medium',question:'Triangle: Base 7 cm, height 14 cm.',answer:49,unit:'cm²',explanation:'Area = ½ × 7 × 14 = <strong>49 cm²</strong>'},
+  {num:20,diff:'medium',question:'Parallelogram: Base 8.5 in, height 6 in.',answer:51,unit:'in²',explanation:'Area = 8.5 × 6 = <strong>51 in²</strong>'},
+  
+  // HARD (H1-H20)
+  {num:21,diff:'hard',question:'Rect + Triangle: Rectangle 10 m × 7 m. Triangle roof: base 10 m, height 4 m. Total area?',answer:90,unit:'m²',explanation:'Rectangle = 10 × 7 = 70 m². Triangle = ½ × 10 × 4 = 20 m². Total = 70 + 20 = <strong>90 m²</strong>'},
+  {num:22,diff:'hard',question:'L-Shape (2 Rects): Rect A: 9 ft × 12 ft. Rect B: 6 ft × 4 ft. Total area?',answer:132,unit:'ft²',explanation:'A = 9 × 12 = 108 ft². B = 6 × 4 = 24 ft². Total = 108 + 24 = <strong>132 ft²</strong>'},
+  {num:23,diff:'hard',question:'Rect − Corner Tri: Rectangle 14 cm × 10 cm minus corner triangle (base 6 cm, height 8 cm). Shaded area?',answer:116,unit:'cm²',explanation:'Rectangle = 14 × 10 = 140 cm². Triangle = ½ × 6 × 8 = 24 cm². Shaded = 140 - 24 = <strong>116 cm²</strong>'},
+  {num:24,diff:'hard',question:'Rect + Parallelogram: Rectangle 10 m × 6 m + parallelogram (base 9 m, height 7 m). Total area?',answer:123,unit:'m²',explanation:'Rectangle = 10 × 6 = 60 m². Parallelogram = 9 × 7 = 63 m². Total = 60 + 63 = <strong>123 m²</strong>'},
+  {num:25,diff:'hard',question:'Frame (Rect − Rect): Outer rectangle 20 ft × 15 ft, inner opening 16 ft × 11 ft. Frame area only?',answer:124,unit:'ft²',explanation:'Outer = 20 × 15 = 300 ft². Inner = 16 × 11 = 176 ft². Frame = 300 - 176 = <strong>124 ft²</strong>'},
+  {num:26,diff:'hard',question:'Two Triangles: Triangle 1: base 8 in, height 6 in. Triangle 2: base 10 in, height 8 in. Total?',answer:64,unit:'in²',explanation:'Tri 1 = ½ × 8 × 6 = 24 in². Tri 2 = ½ × 10 × 8 = 40 in². Total = 24 + 40 = <strong>64 in²</strong>'},
+  {num:27,diff:'hard',question:'Rect + Trapezoid: Rectangle 12 cm × 4 cm below trapezoid (b1=12, b2=18, h=6 cm). Total area?',answer:138,unit:'cm²',explanation:'Rectangle = 12 × 4 = 48 cm². Trapezoid = ½ × (12+18) × 6 = 90 cm². Total = 48 + 90 = <strong>138 cm²</strong>'},
+  {num:28,diff:'hard',question:'Trapezoid − Triangle: Trapezoid (b1=10 in, b2=16 in, h=8 in) minus triangle (base 6 in, height 5 in). Shaded area?',answer:89,unit:'in²',explanation:'Trapezoid = ½ × (10+16) × 8 = 104 in². Triangle = ½ × 6 × 5 = 15 in². Shaded = 104 - 15 = <strong>89 in²</strong>'},
+  {num:29,diff:'hard',question:'Arrow Shape: Rectangle 8 m × 5 m + two side triangles each (base 4 m, height 5 m). Total area?',answer:60,unit:'m²',explanation:'Rectangle = 8 × 5 = 40 m². Each triangle = ½ × 4 × 5 = 10 m². Total = 40 + 10 + 10 = <strong>60 m²</strong>'},
+  {num:30,diff:'hard',question:'Big Tri − Small Tri: Large triangle (base 20 ft, height 15 ft) minus inner triangle (base 10 ft, height 6 ft). Shaded area?',answer:120,unit:'ft²',explanation:'Large = ½ × 20 × 15 = 150 ft². Small = ½ × 10 × 6 = 30 ft². Shaded = 150 - 30 = <strong>120 ft²</strong>'},
+  {num:31,diff:'hard',question:'3-Part Staircase: Rect A: 10 cm × 8 cm. Rect B: 6 cm × 5 cm. Rect C: 4 cm × 3 cm. Total area?',answer:122,unit:'cm²',explanation:'A = 10 × 8 = 80 cm². B = 6 × 5 = 30 cm². C = 4 × 3 = 12 cm². Total = 80 + 30 + 12 = <strong>122 cm²</strong>'},
+  {num:32,diff:'hard',question:'Rect − Parallelogram: Rectangle 18 m × 12 m minus parallelogram hole (base 10 m, height 6 m). Remaining area?',answer:156,unit:'m²',explanation:'Rectangle = 18 × 12 = 216 m². Parallelogram = 10 × 6 = 60 m². Remaining = 216 - 60 = <strong>156 m²</strong>'},
+  {num:33,diff:'hard',question:'Find Missing Height: House shape total area = 80 ft². Triangle (b=8 ft, h=4 ft). Rectangle width=8 ft. Find rectangle\'s height.',answer:8,unit:'ft',explanation:'Triangle = ½ × 8 × 4 = 16 ft². Rectangle area = 80 - 16 = 64 ft². Height = 64 ÷ 8 = <strong>8 ft</strong>'},
+  {num:34,diff:'hard',question:'Trapezoid + Triangle: Trapezoid (b1=6 cm, b2=10 cm, h=8 cm) + triangle on top (base 10 cm, height 6 cm). Total area?',answer:94,unit:'cm²',explanation:'Trapezoid = ½ × (6+10) × 8 = 64 cm². Triangle = ½ × 10 × 6 = 30 cm². Total = 64 + 30 = <strong>94 cm²</strong>'},
+  {num:35,diff:'hard',question:'Rect − 2 Corners: Rectangle 20 ft × 12 ft minus two corner triangles (each base 6 ft, height 5 ft). Remaining area?',answer:210,unit:'ft²',explanation:'Rectangle = 20 × 12 = 240 ft². Each triangle = ½ × 6 × 5 = 15 ft². Remaining = 240 - 15 - 15 = <strong>210 ft²</strong>'},
+  {num:36,diff:'hard',question:'Room + Alcove: Living room 15 m × 10 m plus rectangular alcove 4 m × 3 m. Total floor area?',answer:162,unit:'m²',explanation:'Room = 15 × 10 = 150 m². Alcove = 4 × 3 = 12 m². Total = 150 + 12 = <strong>162 m²</strong>'},
+  {num:37,diff:'hard',question:'Pentagon: Rectangle 8 in × 10 in + triangle on top (base 8 in, height 6 in). Total area?',answer:104,unit:'in²',explanation:'Rectangle = 8 × 10 = 80 in². Triangle = ½ × 8 × 6 = 24 in². Total = 80 + 24 = <strong>104 in²</strong>'},
+  {num:38,diff:'hard',question:'Trapezoid − Rect Hole: Trapezoid (b1=8 cm, b2=16 cm, h=10 cm) minus rectangular hole (5 cm × 4 cm). Remaining area?',answer:100,unit:'cm²',explanation:'Trapezoid = ½ × (8+16) × 10 = 120 cm². Hole = 5 × 4 = 20 cm². Remaining = 120 - 20 = <strong>100 cm²</strong>'},
+  {num:39,diff:'hard',question:'Parallelogram + Triangle: Parallelogram (base 12 m, height 8 m) + triangle on top (base 12 m, height 5 m). Total area?',answer:126,unit:'m²',explanation:'Parallelogram = 12 × 8 = 96 m². Triangle = ½ × 12 × 5 = 30 m². Total = 96 + 30 = <strong>126 m²</strong>'},
+  {num:40,diff:'hard',question:'3-Operation Floor Plan: Main rect 20 ft × 15 ft + bay window triangle (base 8 ft, height 6 ft) − closet rect (4 ft × 3 ft). Total area?',answer:312,unit:'ft²',explanation:'Main = 20 × 15 = 300 ft². Bay = ½ × 8 × 6 = 24 ft². Closet = 4 × 3 = 12 ft². Total = 300 + 24 - 12 = <strong>312 ft²</strong>'}
+];
+
+let currentProblem = 0;
+let score = 0;
+let answered = false;
+const problems = eveningProblems;
+
+function renderProblem(index) {
+  const container = document.getElementById('problemsContainer');
+  const prob = problems[index];
+  
+  const html = `
+    <div class="problem active" id="problem${index}">
+      <div class="prob-header">
+        <span class="prob-num">Problem ${prob.num} of 40</span>
+        <span class="diff ${prob.diff}">${prob.diff.toUpperCase()}</span>
+      </div>
+      <div class="prob-q">${prob.question}</div>
+      <div class="answer-box">
+        <input type="number" id="answer${index}" placeholder="Enter your answer" step="0.01">
+        <button class="btn btn-check" onclick="checkAnswer(${index})">Check Answer</button>
+      </div>
+      <div class="feedback" id="feedback${index}"></div>
+      <button class="btn btn-next" id="nextBtn${index}" style="display:none;margin-top:16px" onclick="nextProblem()">
+        ${index < problems.length - 1 ? 'Next Problem →' : 'See Results 🎉'}
+      </button>
+    </div>
+  `;
+  
+  container.innerHTML = html;
+  updateProgress();
+  document.getElementById(`answer${index}`).focus();
+  document.getElementById(`answer${index}`).addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' && !answered) checkAnswer(index);
+  });
+}
+
+function checkAnswer(index) {
+  if (answered) return;
+  const prob = problems[index];
+  const userAnswer = parseFloat(document.getElementById(`answer${index}`).value);
+  const feedback = document.getElementById(`feedback${index}`);
+  const checkBtn = document.querySelector(`#problem${index} .btn-check`);
+  const nextBtn = document.getElementById(`nextBtn${index}`);
+  
+  if (isNaN(userAnswer)) {
+    alert('Please enter a number!');
+    return;
+  }
+  
+  answered = true;
+  checkBtn.disabled = true;
+  nextBtn.style.display = 'inline-flex';
+  
+  const isCorrect = Math.abs(userAnswer - prob.answer) < 0.01;
+  
+  if (isCorrect) {
+    score++;
+    feedback.className = 'feedback correct show';
+    feedback.innerHTML = `<div class="feedback-title">✅ Correct!</div><div class="feedback-text">${prob.explanation}</div>`;
+  } else {
+    feedback.className = 'feedback wrong show';
+    feedback.innerHTML = `<div class="feedback-title">❌ Not quite</div><div class="feedback-text">The correct answer is <strong>${prob.answer} ${prob.unit}</strong>. ${prob.explanation}</div>`;
+  }
+  updateProgress();
+}
+
+function nextProblem() {
+  answered = false;
+  currentProblem++;
+  if (currentProblem < problems.length) {
+    renderProblem(currentProblem);
+  } else {
+    showResults();
+  }
+}
+
+function updateProgress() {
+  const progress = ((currentProblem + (answered ? 1 : 0)) / problems.length) * 100;
+  document.getElementById('progressBar').style.width = progress + '%';
+  document.getElementById('scoreDisplay').textContent = `Score: ${score}/${currentProblem + (answered ? 1 : 0)}`;
+}
+
+function showResults() {
+  document.getElementById('problemsContainer').style.display = 'none';
+  const results = document.getElementById('results');
+  const accuracy = Math.round((score / problems.length) * 100);
+  
+  let emoji = '🎉', message = 'Great session!';
+  if (score === 40) {
+    emoji = '🏆';
+    message = 'Perfect 40/40! Absolutely incredible! 대박!';
+  } else if (score >= 36) {
+    emoji = '🌟';
+    message = 'Outstanding! Almost perfect!';
+  } else if (score >= 30) {
+    emoji = '💪';
+    message = 'Excellent work! Strong performance!';
+  } else if (score >= 24) {
+    emoji = '📚';
+    message = 'Good job! Keep practicing!';
+  } else {
+    emoji = '🎯';
+    message = '40 problems is a lot! Keep training!';
+  }
+  
+  document.getElementById('resultsEmoji').textContent = emoji;
+  document.getElementById('finalScore').textContent = `${score}/40`;
+  document.getElementById('resultsMsg').textContent = message;
+  document.getElementById('correctCount').textContent = score;
+  document.getElementById('wrongCount').textContent = problems.length - score;
+  document.getElementById('accuracy').textContent = accuracy + '%';
+  results.classList.add('show');
+}
+
+renderProblem(0);
+</script>
+</body>
+</html>
