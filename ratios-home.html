@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Chapter 2: Ratios - Compare quantities, scale recipes, solve real-world problems">
+<title>Chapter 2: Ratios — 대박 Daebak</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔢</text></svg>">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pink:#ff6b9d;--purple:#7c3aed;--purp-l:#a78bfa;--purp-bg:#f5f3ff;
+  --hero:#0d0618;--text:#1a0a2e;--muted:#64748b;--border:#e8e4f4;
+  --orange:#f59e0b;--orange-l:#fef3c7;--green:#10b981;
+  --card-sh:0 4px 20px rgba(245,158,11,.12);--r:14px;
+}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:var(--purp-bg);color:var(--text);line-height:1.6}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(13,6,24,.96);backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,107,157,.18);padding:0 24px;
+  display:flex;align-items:center;justify-content:space-between;height:58px}
+.nav-logo{font-size:1.25rem;font-weight:900;color:#fff;text-decoration:none;
+  display:flex;align-items:center;gap:7px}
+.nav-logo .kr{color:var(--pink)}
+.nav-back{color:rgba(255,255,255,.7);text-decoration:none;font-size:.9rem;
+  padding:6px 14px;border-radius:20px;transition:all .15s;display:flex;align-items:center;gap:6px}
+.nav-back:hover{color:#fff;background:rgba(255,255,255,.1)}
+
+/* HEADER */
+.chapter-header{background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);
+  color:#fff;padding:60px 24px 50px;text-align:center;position:relative;overflow:hidden}
+.chapter-header::before{content:'🔢';position:absolute;font-size:clamp(120px,25vw,200px);
+  opacity:.08;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.ch-badge{display:inline-block;background:rgba(255,255,255,.2);
+  border:1px solid rgba(255,255,255,.3);color:#fff;font-size:.75rem;
+  font-weight:800;padding:5px 14px;border-radius:99px;margin-bottom:16px;
+  letter-spacing:.8px}
+.ch-title{font-size:clamp(2rem,5vw,3rem);font-weight:900;margin-bottom:12px;
+  letter-spacing:-.8px}
+.ch-desc{font-size:1.05rem;max-width:600px;margin:0 auto;opacity:.95;line-height:1.7}
+
+/* CONTAINER */
+.container{max-width:1000px;margin:0 auto;padding:50px 24px 80px}
+
+/* COMING SOON */
+.coming-soon{background:#fff;border-radius:var(--r);padding:60px 40px;
+  text-align:center;border:2px solid var(--border);box-shadow:var(--card-sh)}
+.coming-soon-icon{font-size:4rem;margin-bottom:20px}
+.coming-soon h2{font-size:2rem;font-weight:900;margin-bottom:12px;color:var(--text)}
+.coming-soon p{font-size:1.05rem;color:var(--muted);margin-bottom:28px;line-height:1.7;
+  max-width:500px;margin-left:auto;margin-right:auto}
+.preview-list{list-style:none;max-width:400px;margin:0 auto 32px;text-align:left}
+.preview-list li{padding:12px 0;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:12px;font-size:.95rem}
+.preview-list li:last-child{border-bottom:none}
+.preview-list li::before{content:'✓';color:var(--orange);font-weight:900;
+  font-size:1.2rem;flex-shrink:0}
+.btn-back{background:var(--orange);color:#fff;text-decoration:none;
+  padding:14px 32px;border-radius:99px;font-size:1rem;font-weight:700;
+  display:inline-block;transition:all .2s}
+.btn-back:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(245,158,11,.3)}
+
+/* FOOTER */
+.footer-nav{background:#fff;border-top:2px solid var(--border);padding:24px;
+  text-align:center}
+.footer-nav a{display:inline-flex;align-items:center;gap:6px;
+  background:var(--purp-bg);color:var(--purple);text-decoration:none;
+  padding:12px 24px;border-radius:99px;font-weight:700;
+  border:2px solid var(--border);transition:all .2s}
+.footer-nav a:hover{background:var(--purple);color:#fff;border-color:var(--purple)}
+
+@media(max-width:768px){
+  .container{padding:40px 20px 60px}
+  .chapter-header{padding:50px 20px 40px}
+  .coming-soon{padding:40px 24px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <span class="kr">대박</span> Daebak
+  </a>
+  <a href="index.html" class="nav-back">← All Chapters</a>
+</nav>
+
+<div class="chapter-header">
+  <div class="ch-badge">CHAPTER 2</div>
+  <h1 class="ch-title">🔢 Ratios</h1>
+  <p class="ch-desc">
+    Compare quantities, scale recipes, and solve real-world problems. 
+    Build understanding from concrete examples to abstract thinking.
+  </p>
+</div>
+
+<div class="container">
+  
+  <div class="coming-soon">
+    <div class="coming-soon-icon">🚧</div>
+    <h2>Coming Very Soon!</h2>
+    <p>
+      We're building an amazing Ratios chapter with first-principles teaching, 
+      interactive examples, and comprehensive practice. Check back soon!
+    </p>
+    
+    <ul class="preview-list">
+      <li>What ratios really mean (not just numbers!)</li>
+      <li>Equivalent ratios and simplifying</li>
+      <li>Scaling recipes up and down</li>
+      <li>Real-world word problems</li>
+      <li>Interactive practice with feedback</li>
+    </ul>
+
+    <p style="margin-bottom:24px;font-size:.9rem;color:var(--muted)">
+      In the meantime, master Chapter 1: Area!
+    </p>
+    
+    <a href="area-home.html" class="btn-back">Go to Chapter 1 →</a>
+  </div>
+
+</div>
+
+<div class="footer-nav">
+  <a href="index.html">← Back to All Chapters</a>
+</div>
+
+</body>
+</html>

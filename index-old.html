@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <meta name="description" content="대박 Daebak — K-pop inspired study platform for 6th grade. Cheat sheets, practice problems and more for every subject.">
+  <meta name="theme-color" content="#ff6b9d">
+  <meta property="og:title" content="대박 Daebak — Study Like an Idol">
+  <meta property="og:description" content="K-pop inspired study platform for 6th grade. Train hard. Debut ready.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌟</text></svg>">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>대박 Daebak — Study Like an Idol</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pink:#ff6b9d;--pink-l:#ffe4ef;--purple:#7c3aed;--purp-l:#a78bfa;
+  --purp-bg:#f5f3ff;--hero:#0d0618;
+  --surface:#fff;--text:#1a0a2e;--muted:#64748b;--border:#e8e4f4;
+  --card-sh:0 4px 20px rgba(124,58,237,.1);
+  --rect:#3b82f6;--rect-l:#dbeafe;
+  --para:#10b981;--para-l:#d1fae5;
+  --tri:#f59e0b; --tri-l:#fef3c7;
+  --trap:#8b5cf6;--trap-l:#ede9fe;
+  --r:14px;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-behavior:smooth;height:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--purp-bg);color:var(--text);line-height:1.6}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(13,6,24,.96);backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,107,157,.18);padding:0 24px;
+  display:flex;align-items:center;justify-content:space-between;height:58px}
+.nav-logo{font-size:1.25rem;font-weight:900;color:#fff;text-decoration:none;
+  display:flex;align-items:center;gap:7px;letter-spacing:-.3px}
+.nav-logo .kr{color:var(--pink)}
+.nav-links{display:flex;gap:3px;list-style:none}
+.nav-links a{color:rgba(255,255,255,.55);text-decoration:none;font-size:.85rem;
+  padding:6px 12px;border-radius:20px;transition:all .15s}
+.nav-links a:hover{color:#fff;background:rgba(255,255,255,.1)}
+.nav-links a.on{color:var(--pink);background:rgba(255,107,157,.12)}
+
+/* HERO */
+.hero{background:var(--hero);min-height:90vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  padding:60px 24px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;font-size:clamp(100px,28vw,260px);font-weight:900;
+  color:rgba(124,58,237,.07);user-select:none;pointer-events:none;letter-spacing:-8px;line-height:1}
+.stars{position:absolute;inset:0;pointer-events:none}
+.star{position:absolute;border-radius:50%;background:#fff;
+  animation:twinkle var(--d,3s) ease-in-out infinite var(--dl,0s)}
+@keyframes twinkle{0%,100%{opacity:.1;transform:scale(1)}50%{opacity:.75;transform:scale(1.4)}}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,107,157,.14);border:1px solid rgba(255,107,157,.3);
+  color:var(--pink);font-size:.78rem;font-weight:700;padding:5px 16px;
+  border-radius:99px;margin-bottom:22px;letter-spacing:.5px}
+.hero h1{font-size:clamp(2.1rem,6vw,3.8rem);font-weight:900;color:#fff;
+  letter-spacing:-1.5px;line-height:1.08;margin-bottom:18px;max-width:680px}
+.hero h1 .pk{color:var(--pink)}.hero h1 .pl{color:var(--purp-l)}
+.hero-sub{font-size:1.02rem;color:rgba(255,255,255,.56);max-width:460px;
+  margin-bottom:36px;line-height:1.75}
+.hero-sub strong{color:rgba(255,255,255,.9)}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.btn-p{background:var(--pink);color:#fff;border:none;padding:13px 28px;
+  border-radius:99px;font-size:.97rem;font-weight:700;cursor:pointer;
+  text-decoration:none;display:inline-block;transition:transform .15s,box-shadow .15s;
+  box-shadow:0 4px 20px rgba(255,107,157,.4)}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,107,157,.5)}
+.btn-g{background:rgba(255,255,255,.08);color:rgba(255,255,255,.8);
+  border:1px solid rgba(255,255,255,.18);padding:13px 28px;border-radius:99px;
+  font-size:.97rem;font-weight:600;cursor:pointer;text-decoration:none;
+  display:inline-block;transition:all .15s}
+.btn-g:hover{background:rgba(255,255,255,.15)}
+
+/* STATS BAR */
+.stats-bar{background:rgba(255,107,157,.08);border-top:1px solid rgba(255,107,157,.15);
+  border-bottom:1px solid rgba(255,107,157,.15);padding:18px 24px}
+.stats-inner{max-width:900px;margin:0 auto;display:flex;gap:0;justify-content:space-around;flex-wrap:wrap}
+.stat{text-align:center;padding:8px 20px}
+.stat-num{font-size:1.6rem;font-weight:900;color:var(--pink);display:block;line-height:1}
+.stat-lbl{font-size:.75rem;color:rgba(255,255,255,.45);font-weight:600;
+  text-transform:uppercase;letter-spacing:.5px;margin-top:4px;display:block}
+
+/* SUBJECTS */
+.subj-wrap{background:var(--hero);border-bottom:1px solid rgba(255,255,255,.06)}
+.section{max-width:940px;margin:0 auto;padding:56px 24px}
+.eyebrow{font-size:.75rem;font-weight:800;text-transform:uppercase;
+  letter-spacing:1.5px;color:var(--pink);margin-bottom:8px}
+.sec-title{font-size:clamp(1.5rem,3.5vw,2.1rem);font-weight:900;
+  letter-spacing:-.5px;margin-bottom:6px}
+.sec-sub{font-size:.95rem;color:var(--muted);max-width:440px;
+  margin-bottom:36px;line-height:1.65}
+.subj-wrap .sec-title{color:#fff}
+.subj-wrap .sec-sub{color:rgba(255,255,255,.45)}
+.subj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.subj-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  border-radius:13px;padding:18px 14px;text-align:center;text-decoration:none;
+  transition:all .2s;position:relative;display:block}
+.subj-card.act{background:rgba(255,107,157,.1);border-color:rgba(255,107,157,.4)}
+.subj-card.act:hover{background:rgba(255,107,157,.18);transform:translateY(-3px);
+  box-shadow:0 8px 24px rgba(255,107,157,.22)}
+.subj-card.soon{opacity:.4;cursor:default;pointer-events:none}
+.s-icon{font-size:1.9rem;display:block;margin-bottom:7px}
+.s-name{display:block;font-size:.88rem;font-weight:700;color:#fff;margin-bottom:2px}
+.s-tag{display:block;font-size:.7rem;color:rgba(255,255,255,.38)}
+.subj-card.act .s-tag{color:var(--pink);font-weight:600}
+.soon-badge{position:absolute;top:7px;right:7px;background:rgba(255,255,255,.09);
+  color:rgba(255,255,255,.35);font-size:.58rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.4px;padding:2px 7px;border-radius:99px}
+
+/* MATH SECTION */
+.math-wrap{background:var(--purp-bg)}
+.unit-bar{background:#fff;border-radius:var(--r);padding:20px 22px;
+  margin-bottom:22px;border:1.5px solid var(--border);box-shadow:var(--card-sh);
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.unit-pill{background:var(--purp-bg);border:1.5px solid rgba(124,58,237,.22);
+  color:var(--purple);font-size:.75rem;font-weight:700;padding:4px 13px;
+  border-radius:99px;white-space:nowrap}
+.unit-bar h2{font-size:1.2rem;font-weight:800;letter-spacing:-.3px;flex:1}
+.unit-bar p{font-size:.85rem;color:var(--muted);width:100%;margin-top:2px}
+
+/* SHAPE CARDS */
+.shapes{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:13px;margin-bottom:22px}
+.sc{background:#fff;border-radius:var(--r);overflow:hidden;
+  border:1.5px solid var(--border);box-shadow:var(--card-sh);
+  transition:transform .2s,box-shadow .2s}
+.sc:hover{transform:translateY(-4px);box-shadow:0 8px 28px rgba(124,58,237,.14)}
+.sc-top{height:5px}
+.sc-body{padding:13px 13px 12px}
+.sc h3{font-size:1rem;font-weight:800;margin-bottom:7px}
+.sc svg{width:100%;height:98px;display:block}
+.fbox{color:#fff;text-align:center;padding:8px 6px;border-radius:9px;
+  font-size:1.1rem;font-weight:900;margin:9px 0;letter-spacing:.3px}
+.stip{font-size:.77rem;color:var(--muted);padding:6px 9px;background:#f8f7ff;
+  border-radius:7px;border-left:3px solid;line-height:1.5;margin-bottom:5px}
+.rw{font-size:.74rem;color:var(--muted);padding:6px 9px;
+  border-radius:7px;border:1.5px dashed;line-height:1.6}
+.rw b{font-weight:700}
+
+/* Per-color */
+.rc .sc-top,.rc .fbox{background:var(--rect)}.rc h3{color:var(--rect)}
+.rc .stip{border-color:var(--rect)}.rc .rw{border-color:var(--rect);background:var(--rect-l);color:#1e40af}.rc .rw b{color:var(--rect)}
+.gc .sc-top,.gc .fbox{background:var(--para)}.gc h3{color:var(--para)}
+.gc .stip{border-color:var(--para)}.gc .rw{border-color:var(--para);background:var(--para-l);color:#065f46}.gc .rw b{color:var(--para)}
+.oc .sc-top,.oc .fbox{background:var(--tri)}.oc h3{color:#b45309}
+.oc .stip{border-color:var(--tri)}.oc .rw{border-color:var(--tri);background:var(--tri-l);color:#78350f}.oc .rw b{color:#b45309}
+.vc .sc-top,.vc .fbox{background:var(--trap)}.vc h3{color:#6d28d9}
+.vc .stip{border-color:var(--trap)}.vc .rw{border-color:var(--trap);background:var(--trap-l);color:#4c1d95}.vc .rw b{color:var(--trap)}
+
+/* WARN */
+.warn{background:#fffbeb;border:1.5px solid #f59e0b;border-radius:var(--r);
+  padding:18px 20px;margin-bottom:22px}
+.warn h2{color:#92400e;font-size:1rem;font-weight:800;margin-bottom:10px}
+.wi{display:flex;gap:9px;margin-bottom:7px;font-size:.875rem;color:#78350f;
+  line-height:1.55;align-items:flex-start}
+.wi:last-child{margin-bottom:0}
+.wi-i{flex-shrink:0;margin-top:1px}
+
+/* COMPOSITE */
+.comp{background:#fff;border-radius:var(--r);padding:20px;
+  border:1.5px solid var(--border);box-shadow:var(--card-sh);margin-bottom:22px}
+.comp h2{font-size:1rem;font-weight:800;margin-bottom:12px}
+.rule-box{background:#eff6ff;border-left:4px solid #3b82f6;border-radius:0 9px 9px 0;
+  padding:10px 15px;font-weight:700;color:#1d4ed8;margin-bottom:15px;font-size:.9rem}
+.comp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:13px}
+.cc{border:1.5px dashed var(--border);border-radius:10px;padding:12px}
+.cc h4{font-size:.73rem;text-transform:uppercase;letter-spacing:.6px;
+  color:var(--muted);font-weight:700;margin-bottom:7px}
+.cc svg{width:100%;height:98px;display:block;margin-bottom:8px}
+.csteps{list-style:none;font-size:.81rem;line-height:1.9}
+.csteps li::before{content:attr(data-n) ". ";font-weight:800;color:#3b82f6}
+.csteps strong{color:#3b82f6}
+
+/* PRACTICE CTA */
+.pcta{background:linear-gradient(135deg,var(--hero) 0%,#1a0a3e 100%);
+  border-radius:20px;padding:42px 32px;text-align:center;position:relative;overflow:hidden}
+.pcta-deco{position:absolute;font-size:130px;opacity:.05;right:-5px;bottom:-18px;pointer-events:none}
+.pcta h2{color:#fff;font-size:1.7rem;font-weight:900;margin-bottom:10px;letter-spacing:-.5px}
+.pcta p{color:rgba(255,255,255,.55);margin-bottom:22px;font-size:.97rem}
+.pcta-pills{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-bottom:26px}
+.ppill{padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:700}
+.pl-l{background:#dcfce7;color:#15803d}
+.pl-m{background:#fef3c7;color:#b45309}
+.pl-h{background:#fee2e2;color:#b91c1c}
+
+/* FOOTER */
+footer{background:var(--hero);border-top:1px solid rgba(255,255,255,.06);
+  padding:40px 24px;text-align:center}
+.f-logo{font-size:1.4rem;font-weight:900;color:#fff;margin-bottom:8px}
+.f-logo .kr{color:var(--pink)}
+.f-sub{font-size:.85rem;color:rgba(255,255,255,.38);margin-bottom:16px}
+.f-hw{display:inline-block;color:var(--pink);font-size:1rem;font-weight:800;letter-spacing:1px}
+.f-copy{font-size:.75rem;color:rgba(255,255,255,.2);margin-top:16px}
+
+/* DIVIDER */
+.div{border:none;height:2px;
+  background:linear-gradient(90deg,transparent,var(--border),transparent);
+  margin:28px 0}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  .nav-links{display:none}
+  .hero h1{font-size:2rem}
+  .stats-inner{gap:0}
+  .stat{padding:8px 12px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#home" class="nav-logo"><span class="kr">대박</span> Daebak</a>
+  <ul class="nav-links">
+    <li><a href="#math">📐 Math</a></li>
+    <li><a href="#subjects">🔬 Science</a></li>
+    <li><a href="#subjects">📝 English</a></li>
+    <li><a href="#subjects">🌍 History</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="home" class="hero">
+  <div class="stars" id="stars"></div>
+  <div class="hero-bg" aria-hidden="true">대박</div>
+  <div class="hero-badge">✦ 6th Grade Study Platform ✦</div>
+  <h1>Study like an <span class="pk">idol.</span><br>Debut <span class="pl">ready.</span></h1>
+  <p class="hero-sub">K-pop idols train for <strong>years</strong> before they debut. Every subject is a new comeback. This is your training ground.</p>
+  <div class="cta-row">
+    <a href="#math" class="btn-p">Start Studying 📐</a>
+    <a href="#subjects" class="btn-g">All subjects</a>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar" style="background:rgba(13,6,24,1)">
+  <div class="stats-inner">
+    <div class="stat"><span class="stat-num">4</span><span class="stat-lbl">Formulas Mastered</span></div>
+    <div class="stat"><span class="stat-num">10</span><span class="stat-lbl">Practice Problems</span></div>
+    <div class="stat"><span class="stat-num">1</span><span class="stat-lbl">Comeback in Progress</span></div>
+    <div class="stat"><span class="stat-num">화이팅</span><span class="stat-lbl">Fighting Spirit</span></div>
+  </div>
+</div>
+
+<!-- SUBJECTS -->
+<div class="subj-wrap" id="subjects">
+  <div class="section">
+    <p class="eyebrow">Your subjects</p>
+    <h2 class="sec-title" style="color:#fff">Choose your era</h2>
+    <p class="sec-sub">Every subject is a new comeback. Pick one and go all-kill.</p>
+    <div class="subj-grid">
+      <a href="#math" class="subj-card act">
+        <span class="s-icon">📐</span>
+        <span class="s-name">Math</span>
+        <span class="s-tag">Area · Active</span>
+      </a>
+      <div class="subj-card soon"><div class="soon-badge">Soon</div>
+        <span class="s-icon">🔬</span><span class="s-name">Science</span><span class="s-tag">Coming soon</span>
+      </div>
+      <div class="subj-card soon"><div class="soon-badge">Soon</div>
+        <span class="s-icon">📝</span><span class="s-name">English</span><span class="s-tag">Coming soon</span>
+      </div>
+      <div class="subj-card soon"><div class="soon-badge">Soon</div>
+        <span class="s-icon">🌍</span><span class="s-name">History</span><span class="s-tag">Coming soon</span>
+      </div>
+      <div class="subj-card soon"><div class="soon-badge">Soon</div>
+        <span class="s-icon">💻</span><span class="s-name">CS / Tech</span><span class="s-tag">Coming soon</span>
+      </div>
+      <div class="subj-card soon"><div class="soon-badge">Soon</div>
+        <span class="s-icon">🎨</span><span class="s-name">Art</span><span class="s-tag">Coming soon</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MATH -->
+<div class="math-wrap" id="math">
+<div class="section">
+
+  <p class="eyebrow">📐 Math · Unit 1</p>
+  <h2 class="sec-title">Area of Shapes</h2>
+  <p class="sec-sub">Rectangles, parallelograms, triangles, trapezoids — and complex shapes. All formulas verified.</p>
+
+  <div class="unit-bar">
+    <span class="unit-pill">✅ Active Unit</span>
+    <h2>Finding Area — 6th Grade</h2>
+    <p>California Common Core · All 4 area formulas with diagrams, real-world connections, and 10 practice problems.</p>
+    <p style="margin-top:12px">
+      <a href="learn.html" style="color:var(--purple);font-weight:700;text-decoration:none;font-size:.9rem;margin-right:16px">💡 Learn WHY formulas work →</a>
+      <a href="real-world.html" style="color:var(--purple);font-weight:700;text-decoration:none;font-size:.9rem">🌍 See real-world examples →</a>
+    </p>
+  </div>
+
+  <!-- SHAPE CARDS -->
+  <div class="shapes">
+
+    <!-- RECTANGLE -->
+    <div class="sc rc">
+      <div class="sc-top"></div>
+      <div class="sc-body">
+        <h3>&#9633; Rectangle</h3>
+        <svg viewBox="0 0 200 98" xmlns="http://www.w3.org/2000/svg">
+          <rect x="12" y="8" width="156" height="62" rx="3" fill="#dbeafe" stroke="#3b82f6" stroke-width="2.5"/>
+          <line x1="12" y1="81" x2="168" y2="81" stroke="#3b82f6" stroke-width="1.5"/>
+          <polygon points="12,77 12,85 6,81" fill="#3b82f6"/>
+          <polygon points="168,77 168,85 174,81" fill="#3b82f6"/>
+          <rect x="64" y="75" width="52" height="12" fill="white"/>
+          <text x="90" y="85" text-anchor="middle" fill="#3b82f6" font-size="10" font-weight="700" font-family="sans-serif">length (l)</text>
+          <line x1="183" y1="8" x2="183" y2="70" stroke="#3b82f6" stroke-width="1.5"/>
+          <polygon points="179,8 187,8 183,2" fill="#3b82f6"/>
+          <polygon points="179,70 187,70 183,76" fill="#3b82f6"/>
+          <rect x="177" y="32" width="22" height="12" fill="white"/>
+          <text x="196" y="42" text-anchor="end" fill="#3b82f6" font-size="10" font-weight="700" font-family="sans-serif">w</text>
+        </svg>
+        <div class="fbox">A = l &#215; w</div>
+        <div class="stip">&#10003; Multiply the two different side lengths.</div>
+        <div class="rw"><b>&#127968; At home:</b> Door &#183; TV screen &#183; Phone &#183; Notebook &#183; Window &#183; Table top</div>
+      </div>
+    </div>
+
+    <!-- PARALLELOGRAM -->
+    <div class="sc gc">
+      <div class="sc-top"></div>
+      <div class="sc-body">
+        <h3>&#9649; Parallelogram</h3>
+        <svg viewBox="0 0 200 98" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="36,8 186,8 162,78 12,78" fill="#d1fae5" stroke="#10b981" stroke-width="2.5"/>
+          <line x1="105" y1="8" x2="105" y2="78" stroke="#10b981" stroke-width="2" stroke-dasharray="5,4"/>
+          <rect x="105" y="69" width="9" height="9" fill="none" stroke="#10b981" stroke-width="1.8"/>
+          <text x="117" y="49" fill="#065f46" font-size="10" font-weight="700" font-family="sans-serif">h</text>
+          <line x1="12" y1="90" x2="162" y2="90" stroke="#10b981" stroke-width="1.5"/>
+          <polygon points="12,86 12,94 6,90" fill="#10b981"/>
+          <polygon points="162,86 162,94 168,90" fill="#10b981"/>
+          <rect x="68" y="84" width="44" height="12" fill="white"/>
+          <text x="90" y="94" text-anchor="middle" fill="#10b981" font-size="10" font-weight="700" font-family="sans-serif">base (b)</text>
+          <text x="24" y="46" fill="#dc2626" font-size="8.5" font-weight="700" font-family="sans-serif">&#8592; slant</text>
+          <text x="22" y="57" fill="#dc2626" font-size="8" font-family="sans-serif">(NOT h!)</text>
+        </svg>
+        <div class="fbox">A = b &#215; h</div>
+        <div class="stip">&#9888; h = dotted perpendicular line &#8212; NOT the slanted side!</div>
+        <div class="rw"><b>&#127968; At home:</b> Ramp side-view &#183; Diamond tiles &#183; Staircase railing &#183; Like a rectangle pushed sideways</div>
+      </div>
+    </div>
+
+    <!-- TRIANGLE -->
+    <div class="sc oc">
+      <div class="sc-top"></div>
+      <div class="sc-body">
+        <h3>&#9651; Triangle</h3>
+        <svg viewBox="0 0 200 98" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="100,6 185,86 15,86" fill="#fef3c7" stroke="#f59e0b" stroke-width="2.5"/>
+          <line x1="100" y1="6" x2="100" y2="86" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5,4"/>
+          <rect x="100" y="77" width="9" height="9" fill="none" stroke="#f59e0b" stroke-width="1.8"/>
+          <text x="113" y="51" fill="#92400e" font-size="10" font-weight="700" font-family="sans-serif">h</text>
+          <line x1="15" y1="95" x2="185" y2="95" stroke="#f59e0b" stroke-width="1.5"/>
+          <polygon points="15,91 15,99 9,95" fill="#f59e0b"/>
+          <polygon points="185,91 185,99 191,95" fill="#f59e0b"/>
+          <rect x="76" y="89" width="48" height="11" fill="white"/>
+          <text x="100" y="98" text-anchor="middle" fill="#f59e0b" font-size="10" font-weight="700" font-family="sans-serif">base (b)</text>
+        </svg>
+        <div class="fbox">A = &#189; &#215; b &#215; h</div>
+        <div class="stip">&#10003; Triangle = half a rectangle. Always divide by 2!</div>
+        <div class="rw"><b>&#127968; At home:</b> Pizza slice &#183; Sandwich cut diagonally &#183; Tortilla chip &#183; Home roofline &#183; Yield sign</div>
+      </div>
+    </div>
+
+    <!-- TRAPEZOID -->
+    <div class="sc vc">
+      <div class="sc-top"></div>
+      <div class="sc-body">
+        <h3>&#11074; Trapezoid</h3>
+        <svg viewBox="0 0 200 98" xmlns="http://www.w3.org/2000/svg">
+          <line x1="52" y1="4" x2="148" y2="4" stroke="#8b5cf6" stroke-width="1.5"/>
+          <polygon points="52,1 52,7 46,4" fill="#8b5cf6"/>
+          <polygon points="148,1 148,7 154,4" fill="#8b5cf6"/>
+          <rect x="78" y="0" width="44" height="10" fill="white"/>
+          <text x="100" y="9" text-anchor="middle" fill="#8b5cf6" font-size="9" font-weight="700" font-family="sans-serif">b&#8321; (top)</text>
+          <polygon points="52,14 148,14 184,80 16,80" fill="#ede9fe" stroke="#8b5cf6" stroke-width="2.5"/>
+          <line x1="105" y1="14" x2="105" y2="80" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="5,4"/>
+          <rect x="105" y="71" width="9" height="9" fill="none" stroke="#8b5cf6" stroke-width="1.8"/>
+          <text x="117" y="52" fill="#5b21b6" font-size="10" font-weight="700" font-family="sans-serif">h</text>
+          <line x1="16" y1="91" x2="184" y2="91" stroke="#8b5cf6" stroke-width="1.5"/>
+          <polygon points="16,87 16,95 10,91" fill="#8b5cf6"/>
+          <polygon points="184,87 184,95 190,91" fill="#8b5cf6"/>
+          <rect x="70" y="85" width="60" height="11" fill="white"/>
+          <text x="100" y="94" text-anchor="middle" fill="#8b5cf6" font-size="9" font-weight="700" font-family="sans-serif">b&#8322; (bottom)</text>
+        </svg>
+        <div class="fbox">A = &#189; &#215; (b&#8321;+b&#8322;) &#215; h</div>
+        <div class="stip">&#10003; Add BOTH bases first, then &#215; height, then &#247; 2</div>
+        <div class="rw"><b>&#127968; At home:</b> Bucket/pail &#183; Lampshade &#183; Bathtub end view &#183; Paper cup opened flat</div>
+      </div>
+    </div>
+
+  </div><!-- /shapes -->
+
+  <!-- WARNINGS -->
+  <div class="warn">
+    <h2>&#9888; Top Mistakes to Avoid on the Test</h2>
+    <div class="wi"><span class="wi-i">&#10060;</span><span><strong>Parallelogram &amp; Triangle:</strong> The slanted edge is NOT the height. Use the dotted perpendicular line with the right-angle square &#9633; &#8212; that&#39;s h.</span></div>
+    <div class="wi"><span class="wi-i">&#10060;</span><span><strong>Triangle:</strong> Every triangle = half a rectangle. You must divide by 2 &#8212; always.</span></div>
+    <div class="wi"><span class="wi-i">&#10060;</span><span><strong>Trapezoid:</strong> Add b&#8321; + b&#8322; first, then multiply by h. Don&#39;t skip the addition step!</span></div>
+    <div class="wi"><span class="wi-i">&#10060;</span><span><strong>Units:</strong> Always write square units &#8212; cm&#178;, ft&#178;, in&#178;, m&#178;. Missing units = lost points.</span></div>
+    <div class="wi"><span class="wi-i">&#10003;</span><span>The little square &#9633; in a diagram marks a 90&#176; right angle &#8212; that&#39;s always where h meets the base.</span></div>
+  </div>
+
+  <!-- COMPOSITE -->
+  <div class="comp">
+    <h2>&#129513; Complex / Composite Shapes</h2>
+    <div class="rule-box">&#128273; THE RULE: Break the big shape into simple shapes &#8594; Find each area &#8594; ADD or SUBTRACT</div>
+    <div class="comp-grid">
+
+      <div class="cc">
+        <h4>&#10133; ADD &#8212; &#34;House Shape&#34;</h4>
+        <svg viewBox="0 0 180 98" xmlns="http://www.w3.org/2000/svg">
+          <rect x="28" y="50" width="116" height="44" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.8"/>
+          <polygon points="86,10 144,50 28,50" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.8"/>
+          <line x1="28" y1="50" x2="144" y2="50" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
+          <text x="86" y="77" text-anchor="middle" fill="#1d4ed8" font-size="9" font-weight="700" font-family="sans-serif">10 &#215; 5 = 50</text>
+          <text x="86" y="33" text-anchor="middle" fill="#92400e" font-size="9" font-weight="700" font-family="sans-serif">&#189; &#215; 10 &#215; 4 = 20</text>
+        </svg>
+        <ul class="csteps">
+          <li data-n="1">Rectangle: 10 &#215; 5 = 50 cm&#178;</li>
+          <li data-n="2">Triangle: &#189; &#215; 10 &#215; 4 = 20 cm&#178;</li>
+          <li data-n="3">Total: 50 + 20 = <strong>70 cm&#178;</strong></li>
+        </ul>
+      </div>
+
+      <div class="cc">
+        <h4>&#10133; ADD &#8212; &#34;L-Shape&#34;</h4>
+        <svg viewBox="0 0 180 98" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="8" width="56" height="86" fill="#d1fae5" stroke="#10b981" stroke-width="1.8"/>
+          <rect x="64" y="50" width="108" height="44" fill="#ede9fe" stroke="#8b5cf6" stroke-width="1.8"/>
+          <line x1="64" y1="50" x2="172" y2="50" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
+          <text x="36" y="54" text-anchor="middle" fill="#065f46" font-size="11" font-weight="700" font-family="sans-serif">A</text>
+          <text x="36" y="65" text-anchor="middle" fill="#065f46" font-size="8" font-family="sans-serif">3&#215;8=24</text>
+          <text x="118" y="74" text-anchor="middle" fill="#5b21b6" font-size="11" font-weight="700" font-family="sans-serif">B</text>
+          <text x="118" y="85" text-anchor="middle" fill="#5b21b6" font-size="8" font-family="sans-serif">7&#215;4=28</text>
+        </svg>
+        <ul class="csteps">
+          <li data-n="1">Area A: 3 &#215; 8 = 24 cm&#178;</li>
+          <li data-n="2">Area B: 7 &#215; 4 = 28 cm&#178;</li>
+          <li data-n="3">Total: 24 + 28 = <strong>52 cm&#178;</strong></li>
+        </ul>
+      </div>
+
+      <div class="cc">
+        <h4>&#10134; SUBTRACT &#8212; &#34;Cutout&#34;</h4>
+        <svg viewBox="0 0 180 98" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="8" width="158" height="82" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.8"/>
+          <polygon points="108,8 166,8 166,52" fill="white" stroke="#dc2626" stroke-width="1.8" stroke-dasharray="4,3"/>
+          <text x="56" y="72" text-anchor="middle" fill="#92400e" font-size="8" font-weight="700" font-family="sans-serif">Big rect: 12&#215;8=96</text>
+          <text x="148" y="28" text-anchor="middle" fill="#dc2626" font-size="8" font-weight="700" font-family="sans-serif">Cut-out</text>
+          <text x="148" y="39" text-anchor="middle" fill="#dc2626" font-size="7.5" font-family="sans-serif">&#189;&#215;10&#215;5=25</text>
+        </svg>
+        <ul class="csteps">
+          <li data-n="1">Big rect: 12 &#215; 8 = 96 cm&#178;</li>
+          <li data-n="2">Cut-out: &#189; &#215; 10 &#215; 5 = 25 cm&#178;</li>
+          <li data-n="3">Shaded: 96 &#8722; 25 = <strong>71 cm&#178;</strong></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PRACTICE CTA -->
+  <div class="pcta">
+    <div class="pcta-deco" aria-hidden="true">&#9999;</div>
+    <h2>Ready to practice? &#128170;</h2>
+    <p>10 problems &#8212; start easy, finish strong. Just like a K-pop setlist.</p>
+    <div class="pcta-pills">
+      <span class="ppill pl-l">&#128994; 2 Low</span>
+      <span class="ppill pl-m">&#128993; 4 Medium</span>
+      <span class="ppill pl-h">&#128308; 4 High + Composite</span>
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+    <a href="practice.html" class="btn-p">
+      Launch Interactive Practice &#8594;
+    </a>
+    <a href="practice-extra.html" class="btn-g" style="margin-top:0">
+      &#10024; Extra Practice (15 problems)
+    </a>
+    <a href="practice-evening.html" class="btn-g" style="margin-top:0">
+      &#127769; Evening Practice (40 problems)
+    </a>
+    <a href="practice-olympiad.html" class="btn-g" style="margin-top:0">
+      &#127942; Olympiad Challenge (10 hard)
+    </a>
+    <a href="assets/area-cheat-sheet.pdf" download="Area-Cheat-Sheet.pdf" class="btn-g" style="margin-top:0">
+      &#128196; Download PDF
+    </a>
+    </div>
+  </div>
+
+</div>
+</div><!-- /math -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-logo"><span class="kr">대박</span> Daebak</div>
+  <p class="f-sub">Built with love for a 6th grader making her comeback.</p>
+  <span class="f-hw">&#54868;&#51060;&#54305;! &#10022;</span>
+  <p class="f-copy">&#169; 2026 Daebak Study Platform &nbsp;&#183;&nbsp; All formulas verified &#10003;</p>
+</footer>
+
+<script>
+/* Twinkling stars */
+const sb=document.getElementById('stars');
+for(let i=0;i<55;i++){
+  const s=document.createElement('div');
+  s.className='star';
+  const sz=Math.random()*2.5+1;
+  s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${(Math.random()*3+2).toFixed(1)}s;--dl:-${(Math.random()*5).toFixed(1)}s`;
+  sb.appendChild(s);
+}
+/* Active nav */
+const secs=[...document.querySelectorAll('[id]')];
+const lks=[...document.querySelectorAll('.nav-links a')];
+window.addEventListener('scroll',()=>{
+  let cur='';
+  secs.forEach(s=>{if(window.scrollY>=s.offsetTop-70)cur=s.id});
+  lks.forEach(l=>l.classList.toggle('on',l.getAttribute('href')==='#'+cur));
+},{passive:true});
+</script>
+</body>
+</html>
