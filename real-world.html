@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Real-world area examples with visual demonstrations">
+<title>Real World Examples — 대박 Daebak</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌟</text></svg>">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pink:#ff6b9d;--pink-l:#ffe4ef;--purple:#7c3aed;--purp-l:#a78bfa;
+  --purp-bg:#f5f3ff;--hero:#0d0618;
+  --surface:#fff;--text:#1a0a2e;--muted:#64748b;--border:#e8e4f4;
+  --blue:#3b82f6;--blue-l:#dbeafe;
+  --green:#10b981;--green-l:#d1fae5;
+  --orange:#f59e0b;--orange-l:#fef3c7;
+  --violet:#8b5cf6;--violet-l:#ede9fe;
+  --r:14px;
+}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:var(--purp-bg);color:var(--text);line-height:1.6}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(13,6,24,.96);backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,107,157,.18);padding:0 24px;
+  display:flex;align-items:center;justify-content:space-between;height:58px}
+.nav-logo{font-size:1.25rem;font-weight:900;color:#fff;text-decoration:none;
+  display:flex;align-items:center;gap:7px;letter-spacing:-.3px}
+.nav-logo .kr{color:var(--pink)}
+.nav-back{color:rgba(255,255,255,.7);text-decoration:none;font-size:.9rem;
+  padding:6px 14px;border-radius:20px;transition:all .15s;display:flex;align-items:center;gap:6px}
+.nav-back:hover{color:#fff;background:rgba(255,255,255,.1)}
+
+/* CONTAINER */
+.container{max-width:1000px;margin:0 auto;padding:40px 24px 80px}
+
+/* HEADER */
+.page-header{text-align:center;margin-bottom:50px}
+.page-header h1{font-size:clamp(2rem,5vw,2.8rem);font-weight:900;
+  letter-spacing:-.8px;margin-bottom:14px}
+.page-header h1 .pk{color:var(--pink)}
+.page-header p{color:var(--muted);font-size:1.05rem;max-width:600px;margin:0 auto}
+
+/* CATEGORY */
+.category{margin-bottom:50px}
+.cat-header{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.cat-icon{font-size:2.5rem}
+.cat-title{font-size:1.8rem;font-weight:900;color:var(--purple)}
+
+/* EXAMPLES GRID */
+.examples{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+
+/* EXAMPLE CARD */
+.example{background:#fff;border-radius:var(--r);overflow:hidden;
+  border:1.5px solid var(--border);box-shadow:0 4px 20px rgba(124,58,237,.08);
+  transition:all .3s;cursor:pointer}
+.example:hover{transform:translateY(-6px);box-shadow:0 12px 32px rgba(124,58,237,.16)}
+.example-visual{height:200px;background:var(--purp-bg);display:flex;align-items:center;
+  justify-content:center;padding:20px;position:relative;overflow:hidden}
+.example-visual svg{max-width:100%;max-height:100%;transition:transform .3s}
+.example:hover .example-visual svg{transform:scale(1.05)}
+.example-body{padding:20px}
+.example-name{font-size:1.1rem;font-weight:800;margin-bottom:8px;color:var(--text)}
+.example-desc{font-size:.9rem;color:var(--muted);margin-bottom:12px;line-height:1.6}
+.example-calc{background:var(--purp-bg);padding:12px 14px;border-radius:8px;
+  font-size:.85rem;font-weight:700;color:var(--purple);margin-bottom:10px}
+.example-result{font-size:1.3rem;font-weight:900;color:var(--pink);text-align:center}
+
+/* SHAPE COLORS */
+.rect-color{background:var(--blue-l)}
+.rect-color .example-calc{background:var(--blue-l);color:#1e40af}
+.tri-color{background:var(--orange-l)}
+.tri-color .example-calc{background:var(--orange-l);color:#92400e}
+.para-color{background:var(--green-l)}
+.para-color .example-calc{background:var(--green-l);color:#065f46}
+.trap-color{background:var(--violet-l)}
+.trap-color .example-calc{background:var(--violet-l);color:#5b21b6}
+
+/* INTERACTIVE MODAL */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;
+  align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+.modal.show{display:flex}
+.modal-content{background:#fff;border-radius:20px;max-width:600px;width:100%;
+  max-height:90vh;overflow-y:auto;position:relative;animation:modalIn .3s ease}
+@keyframes modalIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+.modal-close{position:absolute;top:16px;right:16px;background:var(--pink);
+  color:#fff;border:none;width:36px;height:36px;border-radius:50%;
+  font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .2s}
+.modal-close:hover{background:#ff5a8a;transform:rotate(90deg)}
+.modal-visual{background:var(--purp-bg);padding:40px;text-align:center}
+.modal-visual svg{max-width:100%;height:auto}
+.modal-body{padding:32px}
+.modal-title{font-size:1.8rem;font-weight:900;margin-bottom:8px}
+.modal-subtitle{color:var(--muted);margin-bottom:24px}
+.modal-section{margin-bottom:24px}
+.modal-section h3{font-size:1.1rem;font-weight:800;color:var(--purple);margin-bottom:10px}
+.modal-section p{line-height:1.7;margin-bottom:8px}
+.modal-calc{background:var(--purp-bg);padding:16px 20px;border-radius:12px;
+  font-size:1.1rem;font-weight:700;color:var(--purple);text-align:center;margin:16px 0}
+.modal-result{background:linear-gradient(135deg,var(--pink),var(--purple));
+  color:#fff;padding:20px;border-radius:12px;text-align:center;font-size:1.5rem;
+  font-weight:900;margin-top:20px}
+
+/* NEXT STEPS */
+.next-steps{background:linear-gradient(135deg,var(--hero) 0%,#1a0a3e 100%);
+  border-radius:16px;padding:36px 28px;text-align:center;color:#fff;margin-top:50px}
+.next-steps h2{color:#fff;font-size:1.8rem;margin-bottom:12px}
+.next-steps p{color:rgba(255,255,255,.7);margin-bottom:24px}
+.next-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{padding:14px 28px;border-radius:99px;font-size:.95rem;font-weight:700;
+  text-decoration:none;display:inline-block;transition:all .2s}
+.btn-pink{background:var(--pink);color:#fff}
+.btn-pink:hover{background:#ff5a8a;transform:translateY(-2px)}
+.btn-outline{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.3)}
+.btn-outline:hover{background:rgba(255,255,255,.1);border-color:#fff}
+
+@media(max-width:700px){
+  .examples{grid-template-columns:1fr}
+  .modal-body{padding:24px 20px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo"><span class="kr">대박</span> Daebak</a>
+  <a href="index.html#math" class="nav-back">← Back to Math</a>
+</nav>
+
+<div class="container">
+  <div class="page-header">
+    <h1>Area in the <span class="pk">Real World</span></h1>
+    <p>See how area formulas apply to everyday objects around you!</p>
+  </div>
+
+  <!-- RECTANGLES -->
+  <div class="category">
+    <div class="cat-header">
+      <span class="cat-icon">▭</span>
+      <h2 class="cat-title">Rectangles</h2>
+    </div>
+    <div class="examples">
+      
+      <div class="example" onclick="showModal('phone')">
+        <div class="example-visual rect-color">
+          <svg viewBox="0 0 140 200" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="10" width="120" height="180" rx="12" fill="#1f2937" stroke="#374151" stroke-width="3"/>
+            <rect x="20" y="25" width="100" height="150" rx="4" fill="#3b82f6"/>
+            <circle cx="70" cy="185" r="6" fill="#6b7280"/>
+          </svg>
+        </div>
+        <div class="example-body">
+          <div class="example-name">📱 Phone Screen</div>
+          <div class="example-desc">Your phone screen is a perfect rectangle!</div>
+          <div class="example-calc">6 in × 3 in</div>
+          <div class="example-result">18 in²</div>
+        </div>
+      </div>
+
+      <div class="example" onclick="showModal('door')">
+        <div class="example-visual rect-color">
+          <svg viewBox="0 0 160 200" xmlns="http://www.w3.org/2000/svg">
+            <rect x="30" y="10" width="100" height="180" rx="4" fill="#8b5a3c" stroke="#6b4423" stroke-width="3"/>
+            <rect x="45" y="30" width="35" height="50" rx="2" fill="#a67c52"/>
+            <rect x="45" y="90" width="35" height="50" rx="2" fill="#a67c52"/>
+            <circle cx="110" cy="100" r="5" fill="#fbbf24"/>
+          </svg>
+        </div>
+        <div class="example-body">
+          <div class="example-name">🚪 Door</div>
+          <div class="example-desc">Need to paint a door? Calculate the area!</div>
+          <div class="example-calc">7 ft × 3 ft</div>
+          <div class="example-result">21 ft²</div>
+        </div>
+      </div>
+
+      <div class="example" onclick="showModal('notebook')">
+        <div class="example-visual rect-color">
+          <svg viewBox="0 0 180 200" xmlns="http://www.w3.org/2000/svg">
+            <rect x="30" y="20" width="120" height="160" rx="3" fill="#fff" stroke="#3b82f6" stroke-width="3"/>
+            <line x1="30" y1="50" x2="150" y2="50" stroke="#e5e7eb" stroke-width="1.5"/>
+            <line x1="30" y1="70" x2="150" y2="70" stroke="#e5e7eb" stroke-width="1.5"/>
+            <line x1="30" y1="90" x2="150" y2="90" stroke="#e5e7eb" stroke-width="1.5"/>
+            <line x1="30" y1="110" x2="150" y2="110" stroke="#e5e7eb" stroke-width="1.5"/>
+            <line x1="30" y1="130" x2="150" y2="130" stroke="#e5e7eb" stroke-width="1.5"/>
+            <line x1="30" y1="150" x2="150" y2="150" stroke="#e5e7eb" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="example-body">
+          <div class="example-name">📓 Notebook Page</div>
+          <div class="example-desc">How much space do you have to write?</div>
+          <div class="example-calc">11 in × 8.5 in</div>
+          <div class="example-result">93.5 in²</div>
+        </div>
+      </div>
+
+      <div class="example" onclick="showModal('garden')">
+        <div class="example-visual rect-color">
+          <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="20" width="160" height="120" rx="4" fill="#86efac" stroke="#22c55e" stroke-width="3"/>
+            <circle cx="60" cy="50" r="12" fill="#f87171"/>
+            <circle cx="100" cy="50" r="12" fill="#fbbf24"/>
+            <circle cx="140" cy="50" r="12" fill="#f87171"/>
+            <circle cx="60" cy="90" r="12" fill="#fbbf24"/>
+            <circle cx="100" cy="90" r="12" fill="#f87171"/>
+            <circle cx="140" cy="90" r="12" fill="#fbbf24"/>
+            <circle cx="60" cy="120" r="12" fill="#f87171"/>
+            <circle cx="100" cy="120" r="12" fill="#fbbf24"/>
+            <circle cx="140" cy="120" r="12" fill="#f87171"/>
+          </svg>
+        </div>
+        <div class="example-body">
+          <div class="example-name">🌻 Garden Bed</div>
+          <div class="example-desc">Planning a vegetable garden? Find the planting area!</div>
+          <div class="example-calc">8 m × 5 m</div>
+          <div class="example-result">40 m²</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TRIANGLES -->
+  <div class="category">
+    <div class="cat-header">
+      <span class="cat-icon">△</span>
+      <h2 class="cat-title">Triangles</h2>
+    </div>
+    <div class="examples">
+      
+      <div class="example" onclick="showModal('pizza')">
+        <div class="example-visual tri-color">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 100 30 L 170 150 L 30 150 Z" fill="#fbbf24" stroke="#f59e0b" stroke-width="3"/>
+            <circle cx="70" cy="110" r="8" fill="#ef4444"/>
+            <circle cx="110" cy="100" r="8" fill="#ef4444"/>
+            <circle cx="90" cy="130" r="8" fill="#ef4444"/>
+            <circle cx="120" cy="125" r="8" fill="#ef4444"/>
+          </svg>
+        </div>
+        <div class="example-body">
+          <div class="example-name">🍕 Pizza Slice</div>
+          <div class="example-desc">Each slice is a triangle! How much pizza do you get?</div>
+          <div class="example-calc">½ × 10 in × 8 in</div>
+          <div class="example-result">40 in²</div>
+        </div>
+      </div>
+
+      <div class="example" onclick="showModal('sandwich')">
+        <div class="example-visual tri-color">
+          <svg viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 30 140 L 170 140 L 100 40 Z" fill="#fef3c7" stroke="#f59e0b" stroke-width="3"/>
+            <path d="M 30 140 L 170 140 L 100 40 Z" fill="none" stroke="#d97706" stroke-width="2" stroke-dasharray="5,3"/>
+            <rect x="60" y="100" width="80" height="8" fill="#86efac"/>
+            <rect x="60" y="110" width="80" height="8" fill="#fca5a5"/>
+          </svg>
+        </div>
+        <div class="example-body">
+          <div class="example-name">🥪 Sandwich Half</div>
+          <div class="example-desc">Cut a sandwich diagonally — you get two triangles!</div>
+          <div class="example-calc">½ × 6 in × 6 in</div>
+          <div class="example-result">18 in²</div>
+        </div>
+      </div>
+
+      <div class="example" onclick="showModal('roof')">
+        <div class="example-visual tri-color">
+          <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+            <rect x="30" y="100" width="140" height="50" fill="#8b5a3c" stroke="#6b4423" stroke-width="2"/>
+            <path d="M 20 100 L 100 30 L 180 100 Z" fill="#dc2626" stroke="#991b1b" stroke-width="3"/>
+            <rect x="80" y="110" width="40" height="40" fill="#6b4423"/>
+            <rect x="130" y="110" width="25" height="25" fill="#3b82f6"/>
+          </svg>
+        </div>
+        <div class="example-body">
+          <div class="example-name">🏠 House Roof</div>
+          <div class="example-desc">Roofs are often triangular! Calculate shingle area.</div>
+          <div class="example-calc">½ × 30 ft × 12 ft</div>
+          <div class="example-result">180 ft²</div>
+        </div>
+      </div>
+
+      <div class="example" onclick="showModal('sign')">
+        <div class="example-visual tri-color">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 100 30 L 170 150 L 30 150 Z" fill="#fbbf24" stroke="#f59e0b" stroke-width="4"/>
+            <text x="100" y="110" text-anchor="middle" font-size="40" font-weight="900" fill="#1f2937">⚠</text>
+          </svg>
+        </div>
+        <div class="example-body">
+          <div class="example-name">⚠️ Yield Sign</div>
+          <div class="example-desc">Traffic signs use triangles for visibility!</div>
+          <div class="example-calc">½ × 14 in × 12 in</div>
+          <div class="example-result">84 in²</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PARALLELOGRAMS -->
+  <div class="category">
+    <div class="cat-header">
+      <span class="cat-icon">▱</span>
+      <h2 class="cat-title">Parallelograms</h2>
+    </div>
+    <div class="examples">
+      
+      <div class="example" onclick="showModal('ramp')">
+        <div class="example-visual para-color">
+          <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="30,100 150,60 150,120 30,120" fill="#94a3b8" stroke="#64748b" stroke-width="3"/>
+            <rect x="10" y="120" width="170" height="10" fill="#78716c"/>
+            <circle cx="50" cy="135" r="8" fill="#1f2937"/>
+            <circle cx="130" cy="135" r="8" fill="#1f2937"/>
+          </svg>
+        </div>
+        <div class="example-body">
+          <div class="example-name">🛹 Skateboard Ramp</div>
+          <div class="example-desc">Side view of a ramp is a parallelogram!</div>
+          <div class="example-calc">10 ft × 4 ft</div>
+          <div class="example-result">40 ft²</div>
+        </div>
+      </div>
+
+      <div class="example" onclick="showModal('tile')">
+        <div class="example-visual para-color">
+          <svg viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+            <g>
+              <polygon points="20,30 80,30 70,80 10,80" fill="#a78bfa" stroke="#7c3aed" stroke-width="2"/>
+              <polygon points="70,30 130,30 120,80 60,80" fill="#c4b5fd" stroke="#7c3aed" stroke-width="2"/>
+              <polygon points="120,30 180,30 170,80 110,80" fill="#a78bfa" stroke="#7c3aed" stroke-width="2"/>
+              <polygon points="20,80 80,80 70,130 10,130" fill="#c4b5fd" stroke="#7c3aed" stroke-width="2"/>
+              <polygon points="70,80 130,80 120,130 60,130" fill="#a78bfa" stroke="#7c3aed" stroke-width="2"/>
+              <polygon points="120,80 180,80 170,130 110,130" fill="#c4b5fd" stroke="#7c3aed" stroke-width="2"/>
+            </g>
+          </svg>
+        </div>
+        <div class="example-body">
+          <div class="example-name">💎 Diamond Tiles</div>
+          <div class="example-desc">Fancy floor tiles are often parallelograms!</div>
+          <div class="example-calc">15 in × 6 in</div>
+          <div class="example-result">90 in²</div>
+        </div>
+      </div>
+
+      <div class="example" onclick="showModal('stairs')">
+        <div class="example-visual para-color">
+          <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="120" width="40" height="20" fill="#8b5a3c" stroke="#6b4423" stroke-width="2"/>
+            <rect x="60" y="100" width="40" height="40" fill="#8b5a3c" stroke="#6b4423" stroke-width="2"/>
+            <rect x="100" y="80" width="40" height="60" fill="#8b5a3c" stroke="#6b4423" stroke-width="2"/>
+            <polygon points="20,40 140,40 160,120 20,120" fill="#cbd5e1" stroke="#64748b" stroke-width="3"/>
+          </svg>
+        </div>
+        <div class="example-body">
+          <div class="example-name">🪜 Staircase Railing</div>
+          <div class="example-desc">The side panel of stairs forms a parallelogram!</div>
+          <div class="example-calc">12 ft × 5 ft</div>
+          <div class="example-result">60 ft²</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TRAPEZOIDS -->
+  <div class="category">
+    <div class="cat-header">
+      <span class="cat-icon">⏢</span>
+      <h2 class="cat-title">Trapezoids</h2>
+    </div>
+    <div class="examples">
+      
+      <div class="example" onclick="showModal('bucket')">
+        <div class="example-visual trap-color">
+          <svg viewBox="0 0 180 200" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="50,40 130,40 150,160 30,160" fill="#94a3b8" stroke="#64748b" stroke-width="3"/>
+            <ellipse cx="90" cy="40" rx="40" ry="8" fill="#cbd5e1" stroke="#64748b" stroke-width="2"/>
+            <path d="M 40 80 Q 90 85 140 80" stroke="#fff" stroke-width="2" fill="none" opacity="0.3"/>
+          </svg>
+        </div>
+        <div class="example-body">
+          <div class="example-name">🪣 Bucket Side</div>
+          <div class="example-desc">Buckets are wider at top — that's a trapezoid!</div>
+          <div class="example-calc">½ × (8+12) × 10 in</div>
+          <div class="example-result">100 in²</div>
+        </div>
+      </div>
+
+      <div class="example" onclick="showModal('lampshade')">
+        <div class="example-visual trap-color">
+          <svg viewBox="0 0 180 200" xmlns="http://www.w3.org/2000/svg">
+            <line x1="90" y1="20" x2="90" y2="60" stroke="#6b7280" stroke-width="3"/>
+            <circle cx="90" cy="20" r="6" fill="#fbbf24"/>
+            <polygon points="60,60 120,60 140,140 40,140" fill="#fef3c7" stroke="#f59e0b" stroke-width="3" opacity="0.9"/>
+            <ellipse cx="90" cy="60" rx="30" ry="6" fill="#f59e0b"/>
+          </svg>
+        </div>
+        <div class="example-body">
+          <div class="example-name">💡 Lampshade</div>
+          <div class="example-desc">Most lampshades are trapezoidal when unrolled!</div>
+          <div class="example-calc">½ × (6+10) × 8 in</div>
+          <div class="example-result">64 in²</div>
+        </div>
+      </div>
+
+      <div class="example" onclick="showModal('table')">
+        <div class="example-visual trap-color">
+          <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="40,40 160,40 180,100 20,100" fill="#8b5a3c" stroke="#6b4423" stroke-width="3"/>
+            <rect x="50" y="100" width="10" height="50" fill="#6b4423"/>
+            <rect x="140" y="100" width="10" height="50" fill="#6b4423"/>
+          </svg>
+        </div>
+        <div class="example-body">
+          <div class="example-name">🪑 Trapezoid Table</div>
+          <div class="example-desc">Some modern tables have trapezoid tops!</div>
+          <div class="example-calc">½ × (35+55) × 20 in</div>
+          <div class="example-result">900 in²</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- NEXT STEPS -->
+  <div class="next-steps">
+    <h2>Ready to calculate? 📐</h2>
+    <p>Now that you've seen real-world examples, practice with actual problems!</p>
+    <div class="next-btns">
+      <a href="practice.html" class="btn btn-pink">Start Practice Problems →</a>
+      <a href="learn.html" class="btn btn-outline">Learn WHY Formulas Work</a>
+      <a href="index.html#math" class="btn btn-outline">Back to Formulas</a>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal" onclick="closeModal(event)">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div class="modal-visual" id="modalVisual"></div>
+    <div class="modal-body">
+      <h2 class="modal-title" id="modalTitle"></h2>
+      <p class="modal-subtitle" id="modalSubtitle"></p>
+      <div class="modal-section">
+        <h3>📏 Measurements</h3>
+        <p id="modalMeasurements"></p>
+      </div>
+      <div class="modal-section">
+        <h3>🧮 Calculation</h3>
+        <div class="modal-calc" id="modalCalc"></div>
+      </div>
+      <div class="modal-section">
+        <h3>💡 Why This Matters</h3>
+        <p id="modalWhy"></p>
+      </div>
+      <div class="modal-result" id="modalResult"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const examples = {
+  phone: {
+    title: '📱 Phone Screen',
+    subtitle: 'Rectangle',
+    visual: '<svg viewBox="0 0 140 200" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="10" width="120" height="180" rx="12" fill="#1f2937" stroke="#374151" stroke-width="3"/><rect x="20" y="25" width="100" height="150" rx="4" fill="#3b82f6"/><circle cx="70" cy="185" r="6" fill="#6b7280"/></svg>',
+    measurements: 'Length: 6 inches, Width: 3 inches',
+    calc: 'Area = length × width = 6 × 3',
+    why: 'Phone manufacturers need to know screen area to calculate pixel density and manufacturing costs. A bigger screen area means more pixels!',
+    result: '18 in²'
+  },
+  door: {
+    title: '🚪 Door',
+    subtitle: 'Rectangle',
+    visual: '<svg viewBox="0 0 160 200" xmlns="http://www.w3.org/2000/svg"><rect x="30" y="10" width="100" height="180" rx="4" fill="#8b5a3c" stroke="#6b4423" stroke-width="3"/><rect x="45" y="30" width="35" height="50" rx="2" fill="#a67c52"/><rect x="45" y="90" width="35" height="50" rx="2" fill="#a67c52"/><circle cx="110" cy="100" r="5" fill="#fbbf24"/></svg>',
+    measurements: 'Height: 7 feet, Width: 3 feet',
+    calc: 'Area = 7 × 3',
+    why: 'Knowing door area helps you calculate how much paint you need. One gallon of paint typically covers 350-400 ft², so you can paint about 17 doors with one gallon!',
+    result: '21 ft²'
+  },
+  notebook: {
+    title: '📓 Notebook Page',
+    subtitle: 'Rectangle',
+    visual: '<svg viewBox="0 0 180 200" xmlns="http://www.w3.org/2000/svg"><rect x="30" y="20" width="120" height="160" rx="3" fill="#fff" stroke="#3b82f6" stroke-width="3"/><line x1="30" y1="50" x2="150" y2="50" stroke="#e5e7eb" stroke-width="1.5"/><line x1="30" y1="70" x2="150" y2="70" stroke="#e5e7eb" stroke-width="1.5"/><line x1="30" y1="90" x2="150" y2="90" stroke="#e5e7eb" stroke-width="1.5"/><line x1="30" y1="110" x2="150" y2="110" stroke="#e5e7eb" stroke-width="1.5"/><line x1="30" y1="130" x2="150" y2="130" stroke="#e5e7eb" stroke-width="1.5"/><line x1="30" y1="150" x2="150" y2="150" stroke="#e5e7eb" stroke-width="1.5"/></svg>',
+    measurements: 'Length: 11 inches, Width: 8.5 inches (standard US letter)',
+    calc: 'Area = 11 × 8.5',
+    why: 'This is the standard paper size in the US! Knowing the area helps paper companies calculate how much material they need and how many sheets they can cut from larger rolls.',
+    result: '93.5 in²'
+  },
+  garden: {
+    title: '🌻 Garden Bed',
+    subtitle: 'Rectangle',
+    visual: '<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="20" width="160" height="120" rx="4" fill="#86efac" stroke="#22c55e" stroke-width="3"/><circle cx="60" cy="50" r="12" fill="#f87171"/><circle cx="100" cy="50" r="12" fill="#fbbf24"/><circle cx="140" cy="50" r="12" fill="#f87171"/><circle cx="60" cy="90" r="12" fill="#fbbf24"/><circle cx="100" cy="90" r="12" fill="#f87171"/><circle cx="140" cy="90" r="12" fill="#fbbf24"/><circle cx="60" cy="120" r="12" fill="#f87171"/><circle cx="100" cy="120" r="12" fill="#fbbf24"/><circle cx="140" cy="120" r="12" fill="#f87171"/></svg>',
+    measurements: 'Length: 8 meters, Width: 5 meters',
+    calc: 'Area = 8 × 5',
+    why: 'Gardeners need to know area to figure out how many plants to buy, how much soil to order, and how much fertilizer to use. Most seed packets tell you coverage per square meter!',
+    result: '40 m²'
+  },
+  pizza: {
+    title: '🍕 Pizza Slice',
+    subtitle: 'Triangle',
+    visual: '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M 100 30 L 170 150 L 30 150 Z" fill="#fbbf24" stroke="#f59e0b" stroke-width="3"/><circle cx="70" cy="110" r="8" fill="#ef4444"/><circle cx="110" cy="100" r="8" fill="#ef4444"/><circle cx="90" cy="130" r="8" fill="#ef4444"/><circle cx="120" cy="125" r="8" fill="#ef4444"/></svg>',
+    measurements: 'Base: 10 inches, Height: 8 inches',
+    calc: 'Area = ½ × base × height = ½ × 10 × 8',
+    why: 'Pizza restaurants calculate slice area to ensure fair portions. If a 16-inch pizza is cut into 8 slices, each slice should have about the same area!',
+    result: '40 in²'
+  },
+  sandwich: {
+    title: '🥪 Sandwich Half',
+    subtitle: 'Triangle',
+    visual: '<svg viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg"><path d="M 30 140 L 170 140 L 100 40 Z" fill="#fef3c7" stroke="#f59e0b" stroke-width="3"/><rect x="60" y="100" width="80" height="8" fill="#86efac"/><rect x="60" y="110" width="80" height="8" fill="#fca5a5"/></svg>',
+    measurements: 'Base: 6 inches, Height: 6 inches (half of a 6×6 square sandwich)',
+    calc: 'Area = ½ × 6 × 6',
+    why: 'When you cut a square sandwich diagonally, you create two equal triangles. Each triangle has exactly half the area of the original square!',
+    result: '18 in²'
+  },
+  roof: {
+    title: '🏠 House Roof',
+    subtitle: 'Triangle',
+    visual: '<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><rect x="30" y="100" width="140" height="50" fill="#8b5a3c" stroke="#6b4423" stroke-width="2"/><path d="M 20 100 L 100 30 L 180 100 Z" fill="#dc2626" stroke="#991b1b" stroke-width="3"/><rect x="80" y="110" width="40" height="40" fill="#6b4423"/><rect x="130" y="110" width="25" height="25" fill="#3b82f6"/></svg>',
+    measurements: 'Base: 30 feet, Height: 12 feet',
+    calc: 'Area = ½ × 30 × 12',
+    why: 'Roofers need to calculate roof area to estimate how many shingles to buy. Shingles are sold in "squares" (100 ft² each), so this roof would need about 2 squares per side!',
+    result: '180 ft²'
+  },
+  sign: {
+    title: '⚠️ Yield Sign',
+    subtitle: 'Triangle',
+    visual: '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M 100 30 L 170 150 L 30 150 Z" fill="#fbbf24" stroke="#f59e0b" stroke-width="4"/><text x="100" y="110" text-anchor="middle" font-size="40" font-weight="900" fill="#1f2937">⚠</text></svg>',
+    measurements: 'Base: 14 inches, Height: 12 inches',
+    calc: 'Area = ½ × 14 × 12',
+    why: 'Traffic engineers use triangular signs because they\'re easy to recognize even when partially covered. The area determines how much reflective material is needed!',
+    result: '84 in²'
+  },
+  ramp: {
+    title: '🛹 Skateboard Ramp',
+    subtitle: 'Parallelogram',
+    visual: '<svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg"><polygon points="30,100 150,60 150,120 30,120" fill="#94a3b8" stroke="#64748b" stroke-width="3"/><rect x="10" y="120" width="170" height="10" fill="#78716c"/><circle cx="50" cy="135" r="8" fill="#1f2937"/><circle cx="130" cy="135" r="8" fill="#1f2937"/></svg>',
+    measurements: 'Base: 10 feet, Height: 4 feet',
+    calc: 'Area = base × height = 10 × 4',
+    why: 'Skate park builders need to calculate ramp surface area to know how much plywood and grip tape to buy. The slanted side is longer, but we only need the perpendicular height!',
+    result: '40 ft²'
+  },
+  tile: {
+    title: '💎 Diamond Tiles',
+    subtitle: 'Parallelogram',
+    visual: '<svg viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg"><polygon points="20,30 80,30 70,80 10,80" fill="#a78bfa" stroke="#7c3aed" stroke-width="2"/><polygon points="70,30 130,30 120,80 60,80" fill="#c4b5fd" stroke="#7c3aed" stroke-width="2"/><polygon points="120,30 180,30 170,80 110,80" fill="#a78bfa" stroke="#7c3aed" stroke-width="2"/><polygon points="20,80 80,80 70,130 10,130" fill="#c4b5fd" stroke="#7c3aed" stroke-width="2"/><polygon points="70,80 130,80 120,130 60,130" fill="#a78bfa" stroke="#7c3aed" stroke-width="2"/><polygon points="120,80 180,80 170,130 110,130" fill="#c4b5fd" stroke="#7c3aed" stroke-width="2"/></svg>',
+    measurements: 'Base: 15 inches, Height: 6 inches',
+    calc: 'Area = 15 × 6',
+    why: 'Floor tile companies need to calculate area to tell you how many boxes to buy. These fancy parallelogram tiles create beautiful patterns but use the same area formula!',
+    result: '90 in²'
+  },
+  stairs: {
+    title: '🪜 Staircase Railing',
+    subtitle: 'Parallelogram',
+    visual: '<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="120" width="40" height="20" fill="#8b5a3c" stroke="#6b4423" stroke-width="2"/><rect x="60" y="100" width="40" height="40" fill="#8b5a3c" stroke="#6b4423" stroke-width="2"/><rect x="100" y="80" width="40" height="60" fill="#8b5a3c" stroke="#6b4423" stroke-width="2"/><polygon points="20,40 140,40 160,120 20,120" fill="#cbd5e1" stroke="#64748b" stroke-width="3"/></svg>',
+    measurements: 'Base: 12 feet, Height: 5 feet',
+    calc: 'Area = 12 × 5',
+    why: 'Carpenters building stairs need to calculate the railing panel area. Even though the panel is slanted, we use the vertical height to find the area!',
+    result: '60 ft²'
+  },
+  bucket: {
+    title: '🪣 Bucket Side',
+    subtitle: 'Trapezoid',
+    visual: '<svg viewBox="0 0 180 200" xmlns="http://www.w3.org/2000/svg"><polygon points="50,40 130,40 150,160 30,160" fill="#94a3b8" stroke="#64748b" stroke-width="3"/><ellipse cx="90" cy="40" rx="40" ry="8" fill="#cbd5e1" stroke="#64748b" stroke-width="2"/></svg>',
+    measurements: 'Top base: 8 inches, Bottom base: 12 inches, Height: 10 inches',
+    calc: 'Area = ½ × (8 + 12) × 10 = ½ × 20 × 10',
+    why: 'Bucket manufacturers need wider bottoms for stability. The trapezoid shape uses less material at the top while keeping a stable base!',
+    result: '100 in²'
+  },
+  lampshade: {
+    title: '💡 Lampshade',
+    subtitle: 'Trapezoid',
+    visual: '<svg viewBox="0 0 180 200" xmlns="http://www.w3.org/2000/svg"><line x1="90" y1="20" x2="90" y2="60" stroke="#6b7280" stroke-width="3"/><circle cx="90" cy="20" r="6" fill="#fbbf24"/><polygon points="60,60 120,60 140,140 40,140" fill="#fef3c7" stroke="#f59e0b" stroke-width="3" opacity="0.9"/><ellipse cx="90" cy="60" rx="30" ry="6" fill="#f59e0b"/></svg>',
+    measurements: 'Top base: 6 inches, Bottom base: 10 inches, Height: 8 inches',
+    calc: 'Area = ½ × (6 + 10) × 8 = ½ × 16 × 8',
+    why: 'Lampshade makers need to know the surface area to cut the right amount of fabric. The trapezoid shape helps spread light evenly in a room!',
+    result: '64 in²'
+  },
+  table: {
+    title: '🪑 Trapezoid Table',
+    subtitle: 'Trapezoid',
+    visual: '<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><polygon points="40,40 160,40 180,100 20,100" fill="#8b5a3c" stroke="#6b4423" stroke-width="3"/><rect x="50" y="100" width="10" height="50" fill="#6b4423"/><rect x="140" y="100" width="10" height="50" fill="#6b4423"/></svg>',
+    measurements: 'Top base: 35 inches, Bottom base: 55 inches, Height: 20 inches',
+    calc: 'Area = ½ × (35 + 55) × 20 = ½ × 90 × 20',
+    why: 'Modern furniture designers use trapezoid tables because they save space while still providing a large surface area. Perfect for small apartments!',
+    result: '900 in²'
+  }
+};
+
+function showModal(id) {
+  const ex = examples[id];
+  document.getElementById('modalTitle').textContent = ex.title;
+  document.getElementById('modalSubtitle').textContent = ex.subtitle;
+  document.getElementById('modalVisual').innerHTML = ex.visual;
+  document.getElementById('modalMeasurements').textContent = ex.measurements;
+  document.getElementById('modalCalc').textContent = ex.calc;
+  document.getElementById('modalWhy').textContent = ex.why;
+  document.getElementById('modalResult').textContent = 'Area = ' + ex.result;
+  document.getElementById('modal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(event) {
+  if (!event || event.target.id === 'modal') {
+    document.getElementById('modal').classList.remove('show');
+    document.body.style.overflow = 'auto';
+  }
+}
+
+// Close modal with Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
+</script>
+
+</body>
+</html>
