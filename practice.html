@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Interactive area practice problems for 6th grade math">
+<title>Area Practice — 대박 Daebak</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌟</text></svg>">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pink:#ff6b9d;--pink-l:#ffe4ef;--purple:#7c3aed;--purp-l:#a78bfa;
+  --purp-bg:#f5f3ff;--hero:#0d0618;
+  --surface:#fff;--text:#1a0a2e;--muted:#64748b;--border:#e8e4f4;
+  --green:#10b981;--green-l:#d1fae5;
+  --red:#ef4444;--red-l:#fee2e2;
+  --r:14px;
+}
+html{scroll-behavior:smooth;height:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:var(--purp-bg);color:var(--text);line-height:1.6;min-height:100vh}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(13,6,24,.96);backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,107,157,.18);padding:0 24px;
+  display:flex;align-items:center;justify-content:space-between;height:58px}
+.nav-logo{font-size:1.25rem;font-weight:900;color:#fff;text-decoration:none;
+  display:flex;align-items:center;gap:7px;letter-spacing:-.3px}
+.nav-logo .kr{color:var(--pink)}
+.nav-back{color:rgba(255,255,255,.7);text-decoration:none;font-size:.9rem;
+  padding:6px 14px;border-radius:20px;transition:all .15s;display:flex;align-items:center;gap:6px}
+.nav-back:hover{color:#fff;background:rgba(255,255,255,.1)}
+
+/* CONTAINER */
+.container{max-width:880px;margin:0 auto;padding:40px 24px}
+
+/* HEADER */
+.header{text-align:center;margin-bottom:40px}
+.header h1{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:900;
+  letter-spacing:-.8px;margin-bottom:12px}
+.header h1 .pk{color:var(--pink)}
+.header p{color:var(--muted);font-size:1rem;margin-bottom:20px}
+.progress-bar{background:#e5e7eb;height:10px;border-radius:99px;overflow:hidden;max-width:400px;margin:0 auto}
+.progress-fill{background:linear-gradient(90deg,var(--pink),var(--purple));
+  height:100%;width:0%;transition:width .4s ease;border-radius:99px}
+.score{margin-top:12px;font-size:.9rem;font-weight:700;color:var(--purple)}
+
+/* PROBLEM CARD */
+.problem{background:#fff;border-radius:var(--r);padding:32px 28px;
+  border:1.5px solid var(--border);box-shadow:0 4px 20px rgba(124,58,237,.1);
+  margin-bottom:24px;display:none}
+.problem.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.prob-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.prob-num{font-size:.8rem;font-weight:800;text-transform:uppercase;
+  letter-spacing:1px;color:var(--purple)}
+.diff{padding:4px 12px;border-radius:99px;font-size:.75rem;font-weight:700}
+.diff.easy{background:#d1fae5;color:#065f46}
+.diff.medium{background:#fef3c7;color:#92400e}
+.diff.hard{background:#fee2e2;color:#991b1b}
+.prob-q{font-size:1.15rem;font-weight:700;margin-bottom:20px;line-height:1.6}
+.diagram{background:#f8f7ff;border-radius:12px;padding:24px;margin:20px 0;text-align:center}
+.diagram svg{max-width:100%;height:auto}
+.answer-box{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:24px}
+.answer-box input{flex:1;min-width:200px;padding:14px 18px;border:2px solid var(--border);
+  border-radius:12px;font-size:1.05rem;font-weight:600;transition:all .2s}
+.answer-box input:focus{outline:none;border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,58,237,.1)}
+.btn{padding:14px 28px;border-radius:99px;font-size:.95rem;font-weight:700;
+  cursor:pointer;border:none;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.btn-check{background:var(--purple);color:#fff}
+.btn-check:hover{background:#6d28d9;transform:translateY(-2px)}
+.btn-check:disabled{background:#cbd5e1;cursor:not-allowed;transform:none}
+.btn-next{background:var(--pink);color:#fff}
+.btn-next:hover{background:#ff5a8a;transform:translateY(-2px)}
+
+/* FEEDBACK */
+.feedback{margin-top:20px;padding:16px 20px;border-radius:12px;display:none;animation:slideDown .3s ease}
+@keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.feedback.show{display:block}
+.feedback.correct{background:var(--green-l);border:2px solid var(--green);color:#065f46}
+.feedback.wrong{background:var(--red-l);border:2px solid var(--red);color:#991b1b}
+.feedback-title{font-weight:800;font-size:1.05rem;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.feedback-text{font-size:.95rem;line-height:1.6}
+.feedback-text strong{font-weight:700}
+
+/* RESULTS */
+.results{background:#fff;border-radius:var(--r);padding:40px 32px;
+  border:1.5px solid var(--border);box-shadow:0 4px 20px rgba(124,58,237,.1);
+  text-align:center;display:none}
+.results.show{display:block;animation:fadeIn .5s ease}
+.results-emoji{font-size:80px;margin-bottom:16px}
+.results h2{font-size:2rem;font-weight:900;margin-bottom:12px;color:var(--purple)}
+.results-score{font-size:3.5rem;font-weight:900;color:var(--pink);margin-bottom:8px}
+.results-msg{font-size:1.1rem;color:var(--muted);margin-bottom:32px}
+.results-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:16px;margin-bottom:32px}
+.stat-box{background:var(--purp-bg);padding:16px;border-radius:12px}
+.stat-num{font-size:1.8rem;font-weight:900;color:var(--purple);display:block}
+.stat-label{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.btn-restart{background:var(--pink);color:#fff;text-decoration:none;
+  padding:14px 32px;border-radius:99px;font-weight:700;display:inline-block;margin-right:12px}
+.btn-restart:hover{background:#ff5a8a;transform:translateY(-2px)}
+.btn-home{background:#fff;color:var(--purple);border:2px solid var(--purple);
+  text-decoration:none;padding:12px 32px;border-radius:99px;font-weight:700;display:inline-block}
+.btn-home:hover{background:var(--purp-bg)}
+
+@media(max-width:600px){
+  .container{padding:24px 16px}
+  .problem{padding:24px 18px}
+  .answer-box{flex-direction:column}
+  .answer-box input{min-width:100%}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo"><span class="kr">대박</span> Daebak</a>
+  <a href="index.html#math" class="nav-back">← Back to Math</a>
+</nav>
+
+<div class="container">
+  <div class="header">
+    <h1><span class="pk">Area Practice</span> Problems</h1>
+    <p>10 problems • Start easy, finish strong 💪</p>
+    <div class="progress-bar"><div class="progress-fill" id="progressBar"></div></div>
+    <div class="score" id="scoreDisplay">Score: 0/0</div>
+  </div>
+
+  <!-- Problems will be generated here -->
+  <div id="problemsContainer"></div>
+
+  <!-- Results -->
+  <div class="results" id="results">
+    <div class="results-emoji" id="resultsEmoji">🎉</div>
+    <h2>Practice Complete!</h2>
+    <div class="results-score" id="finalScore">0/10</div>
+    <p class="results-msg" id="resultsMsg">Great work!</p>
+    <div class="results-stats">
+      <div class="stat-box">
+        <span class="stat-num" id="correctCount">0</span>
+        <span class="stat-label">Correct</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num" id="wrongCount">0</span>
+        <span class="stat-label">Wrong</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num" id="accuracy">0%</span>
+        <span class="stat-label">Accuracy</span>
+      </div>
+    </div>
+    <a href="practice.html" class="btn-restart">Try Again 🔄</a>
+    <a href="index.html#math" class="btn-home">Back to Math</a>
+  </div>
+</div>
+
+<script>
+const problems = [
+  // EASY - Rectangles
+  {
+    num: 1,
+    diff: 'easy',
+    type: 'rectangle',
+    question: 'A rectangular garden is 8 meters long and 5 meters wide. What is the area?',
+    diagram: '<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="20" width="160" height="80" rx="3" fill="#dbeafe" stroke="#3b82f6" stroke-width="3"/><text x="100" y="65" text-anchor="middle" fill="#1e40af" font-size="16" font-weight="700" font-family="sans-serif">8m × 5m</text><line x1="20" y1="110" x2="180" y2="110" stroke="#3b82f6" stroke-width="2"/><text x="100" y="118" text-anchor="middle" fill="#3b82f6" font-size="12" font-weight="700" font-family="sans-serif">8 m</text><line x1="190" y1="20" x2="190" y2="100" stroke="#3b82f6" stroke-width="2"/><text x="198" y="65" fill="#3b82f6" font-size="12" font-weight="700" font-family="sans-serif">5 m</text></svg>',
+    answer: 40,
+    unit: 'm²',
+    explanation: 'Area of rectangle = length × width = 8 × 5 = <strong>40 m²</strong>'
+  },
+  {
+    num: 2,
+    diff: 'easy',
+    type: 'rectangle',
+    question: 'A phone screen measures 6 inches by 3 inches. Find the area.',
+    diagram: '<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg"><rect x="50" y="15" width="100" height="90" rx="5" fill="#dbeafe" stroke="#3b82f6" stroke-width="3"/><text x="100" y="65" text-anchor="middle" fill="#1e40af" font-size="14" font-weight="700" font-family="sans-serif">6 in × 3 in</text></svg>',
+    answer: 18,
+    unit: 'in²',
+    explanation: 'Area = 6 × 3 = <strong>18 in²</strong>'
+  },
+
+  // MEDIUM - Parallelograms & Triangles
+  {
+    num: 3,
+    diff: 'medium',
+    type: 'parallelogram',
+    question: 'A parallelogram has a base of 10 cm and a height of 7 cm. What is the area?',
+    diagram: '<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg"><polygon points="40,20 170,20 150,90 20,90" fill="#d1fae5" stroke="#10b981" stroke-width="3"/><line x1="100" y1="20" x2="100" y2="90" stroke="#10b981" stroke-width="2" stroke-dasharray="5,4"/><rect x="100" y="81" width="9" height="9" fill="none" stroke="#10b981" stroke-width="2"/><text x="115" y="60" fill="#065f46" font-size="14" font-weight="700" font-family="sans-serif">h = 7 cm</text><line x1="20" y1="100" x2="150" y2="100" stroke="#10b981" stroke-width="2"/><text x="85" y="112" text-anchor="middle" fill="#10b981" font-size="12" font-weight="700" font-family="sans-serif">base = 10 cm</text></svg>',
+    answer: 70,
+    unit: 'cm²',
+    explanation: 'Area of parallelogram = base × height = 10 × 7 = <strong>70 cm²</strong>. Remember: use the perpendicular height, not the slanted side!'
+  },
+  {
+    num: 4,
+    diff: 'medium',
+    type: 'triangle',
+    question: 'A triangle has a base of 12 feet and a height of 8 feet. Calculate the area.',
+    diagram: '<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg"><polygon points="100,15 180,100 20,100" fill="#fef3c7" stroke="#f59e0b" stroke-width="3"/><line x1="100" y1="15" x2="100" y2="100" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5,4"/><rect x="100" y="91" width="9" height="9" fill="none" stroke="#f59e0b" stroke-width="2"/><text x="115" y="60" fill="#92400e" font-size="14" font-weight="700" font-family="sans-serif">h = 8 ft</text><line x1="20" y1="110" x2="180" y2="110" stroke="#f59e0b" stroke-width="2"/><text x="100" y="118" text-anchor="middle" fill="#f59e0b" font-size="12" font-weight="700" font-family="sans-serif">base = 12 ft</text></svg>',
+    answer: 48,
+    unit: 'ft²',
+    explanation: 'Area of triangle = ½ × base × height = ½ × 12 × 8 = <strong>48 ft²</strong>. Don\'t forget to divide by 2!'
+  },
+  {
+    num: 5,
+    diff: 'medium',
+    type: 'parallelogram',
+    question: 'A parallelogram-shaped tile has a base of 15 inches and height of 6 inches. Find its area.',
+    diagram: '<svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg"><polygon points="30,15 160,15 140,75 10,75" fill="#d1fae5" stroke="#10b981" stroke-width="3"/><line x1="95" y1="15" x2="95" y2="75" stroke="#10b981" stroke-width="2" stroke-dasharray="5,4"/><rect x="95" y="66" width="9" height="9" fill="none" stroke="#10b981" stroke-width="2"/><text x="108" y="50" fill="#065f46" font-size="13" font-weight="700" font-family="sans-serif">6 in</text><line x1="10" y1="85" x2="140" y2="85" stroke="#10b981" stroke-width="2"/><text x="75" y="95" text-anchor="middle" fill="#10b981" font-size="12" font-weight="700" font-family="sans-serif">15 in</text></svg>',
+    answer: 90,
+    unit: 'in²',
+    explanation: 'Area = base × height = 15 × 6 = <strong>90 in²</strong>'
+  },
+  {
+    num: 6,
+    diff: 'medium',
+    type: 'triangle',
+    question: 'A triangular sail has a base of 20 meters and height of 15 meters. What is its area?',
+    diagram: '<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg"><polygon points="100,10 185,105 15,105" fill="#fef3c7" stroke="#f59e0b" stroke-width="3"/><line x1="100" y1="10" x2="100" y2="105" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5,4"/><text x="115" y="60" fill="#92400e" font-size="13" font-weight="700" font-family="sans-serif">15 m</text><line x1="15" y1="115" x2="185" y2="115" stroke="#f59e0b" stroke-width="2"/><text x="100" y="118" text-anchor="middle" fill="#f59e0b" font-size="12" font-weight="700" font-family="sans-serif">20 m</text></svg>',
+    answer: 150,
+    unit: 'm²',
+    explanation: 'Area = ½ × 20 × 15 = ½ × 300 = <strong>150 m²</strong>'
+  },
+
+  // HARD - Trapezoids
+  {
+    num: 7,
+    diff: 'hard',
+    type: 'trapezoid',
+    question: 'A trapezoid has bases of 8 cm and 12 cm, with a height of 5 cm. Find the area.',
+    diagram: '<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg"><polygon points="60,25 140,25 170,95 30,95" fill="#ede9fe" stroke="#8b5cf6" stroke-width="3"/><line x1="100" y1="25" x2="100" y2="95" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="5,4"/><rect x="100" y="86" width="9" height="9" fill="none" stroke="#8b5cf6" stroke-width="2"/><text x="115" y="65" fill="#5b21b6" font-size="13" font-weight="700" font-family="sans-serif">h = 5</text><line x1="60" y1="18" x2="140" y2="18" stroke="#8b5cf6" stroke-width="2"/><text x="100" y="14" text-anchor="middle" fill="#5b21b6" font-size="11" font-weight="700" font-family="sans-serif">8 cm</text><line x1="30" y1="103" x2="170" y2="103" stroke="#8b5cf6" stroke-width="2"/><text x="100" y="115" text-anchor="middle" fill="#5b21b6" font-size="11" font-weight="700" font-family="sans-serif">12 cm</text></svg>',
+    answer: 50,
+    unit: 'cm²',
+    explanation: 'Area of trapezoid = ½ × (b₁ + b₂) × h = ½ × (8 + 12) × 5 = ½ × 20 × 5 = <strong>50 cm²</strong>'
+  },
+  {
+    num: 8,
+    diff: 'hard',
+    type: 'trapezoid',
+    question: 'A trapezoidal window has a top width of 6 feet, bottom width of 10 feet, and height of 4 feet. Calculate its area.',
+    diagram: '<svg viewBox="0 0 200 110" xmlns="http://www.w3.org/2000/svg"><polygon points="70,20 130,20 160,90 40,90" fill="#ede9fe" stroke="#8b5cf6" stroke-width="3"/><line x1="100" y1="20" x2="100" y2="90" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="5,4"/><text x="115" y="60" fill="#5b21b6" font-size="13" font-weight="700" font-family="sans-serif">4 ft</text><line x1="70" y1="13" x2="130" y2="13" stroke="#8b5cf6" stroke-width="2"/><text x="100" y="10" text-anchor="middle" fill="#5b21b6" font-size="11" font-weight="700" font-family="sans-serif">6 ft</text><line x1="40" y1="98" x2="160" y2="98" stroke="#8b5cf6" stroke-width="2"/><text x="100" y="108" text-anchor="middle" fill="#5b21b6" font-size="11" font-weight="700" font-family="sans-serif">10 ft</text></svg>',
+    answer: 32,
+    unit: 'ft²',
+    explanation: 'Area = ½ × (6 + 10) × 4 = ½ × 16 × 4 = <strong>32 ft²</strong>'
+  },
+
+  // HARD - Composite Shapes
+  {
+    num: 9,
+    diff: 'hard',
+    type: 'composite',
+    question: 'A house-shaped figure has a rectangular base (10m × 6m) and a triangular roof (base 10m, height 4m). Find the total area.',
+    diagram: '<svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg"><rect x="40" y="70" width="120" height="60" fill="#dbeafe" stroke="#3b82f6" stroke-width="2.5"/><polygon points="100,20 160,70 40,70" fill="#fef3c7" stroke="#f59e0b" stroke-width="2.5"/><line x1="40" y1="70" x2="160" y2="70" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3"/><text x="100" y="100" text-anchor="middle" fill="#1e40af" font-size="12" font-weight="700" font-family="sans-serif">10m × 6m</text><text x="100" y="50" text-anchor="middle" fill="#92400e" font-size="11" font-weight="700" font-family="sans-serif">base 10m, h 4m</text></svg>',
+    answer: 80,
+    unit: 'm²',
+    explanation: 'Rectangle: 10 × 6 = 60 m². Triangle: ½ × 10 × 4 = 20 m². Total: 60 + 20 = <strong>80 m²</strong>'
+  },
+  {
+    num: 10,
+    diff: 'hard',
+    type: 'composite',
+    question: 'An L-shaped room has two rectangles: one is 8ft × 5ft, the other is 6ft × 3ft. What is the total floor area?',
+    diagram: '<svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="20" width="70" height="100" fill="#d1fae5" stroke="#10b981" stroke-width="2.5"/><rect x="90" y="70" width="90" height="50" fill="#ede9fe" stroke="#8b5cf6" stroke-width="2.5"/><text x="55" y="75" text-anchor="middle" fill="#065f46" font-size="13" font-weight="700" font-family="sans-serif">A</text><text x="55" y="88" text-anchor="middle" fill="#065f46" font-size="10" font-family="sans-serif">8×5</text><text x="135" y="98" text-anchor="middle" fill="#5b21b6" font-size="13" font-weight="700" font-family="sans-serif">B</text><text x="135" y="111" text-anchor="middle" fill="#5b21b6" font-size="10" font-family="sans-serif">6×3</text></svg>',
+    answer: 58,
+    unit: 'ft²',
+    explanation: 'Area A: 8 × 5 = 40 ft². Area B: 6 × 3 = 18 ft². Total: 40 + 18 = <strong>58 ft²</strong>'
+  }
+];
+
+let currentProblem = 0;
+let score = 0;
+let answered = false;
+
+function renderProblem(index) {
+  const container = document.getElementById('problemsContainer');
+  const prob = problems[index];
+  
+  const html = `
+    <div class="problem active" id="problem${index}">
+      <div class="prob-header">
+        <span class="prob-num">Problem ${prob.num} of 10</span>
+        <span class="diff ${prob.diff}">${prob.diff.toUpperCase()}</span>
+      </div>
+      <div class="prob-q">${prob.question}</div>
+      ${prob.diagram ? `<div class="diagram">${prob.diagram}</div>` : ''}
+      <div class="answer-box">
+        <input type="number" id="answer${index}" placeholder="Enter your answer" step="0.01">
+        <button class="btn btn-check" onclick="checkAnswer(${index})">Check Answer</button>
+      </div>
+      <div class="feedback" id="feedback${index}"></div>
+      <button class="btn btn-next" id="nextBtn${index}" style="display:none;margin-top:16px" onclick="nextProblem()">
+        ${index < problems.length - 1 ? 'Next Problem →' : 'See Results 🎉'}
+      </button>
+    </div>
+  `;
+  
+  container.innerHTML = html;
+  updateProgress();
+  
+  // Focus input
+  document.getElementById(`answer${index}`).focus();
+  
+  // Enter key to check
+  document.getElementById(`answer${index}`).addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' && !answered) {
+      checkAnswer(index);
+    }
+  });
+}
+
+function checkAnswer(index) {
+  if (answered) return;
+  
+  const prob = problems[index];
+  const userAnswer = parseFloat(document.getElementById(`answer${index}`).value);
+  const feedback = document.getElementById(`feedback${index}`);
+  const checkBtn = document.querySelector(`#problem${index} .btn-check`);
+  const nextBtn = document.getElementById(`nextBtn${index}`);
+  
+  if (isNaN(userAnswer)) {
+    alert('Please enter a number!');
+    return;
+  }
+  
+  answered = true;
+  checkBtn.disabled = true;
+  nextBtn.style.display = 'inline-flex';
+  
+  const isCorrect = Math.abs(userAnswer - prob.answer) < 0.01;
+  
+  if (isCorrect) {
+    score++;
+    feedback.className = 'feedback correct show';
+    feedback.innerHTML = `
+      <div class="feedback-title">✅ Correct!</div>
+      <div class="feedback-text">${prob.explanation}</div>
+    `;
+  } else {
+    feedback.className = 'feedback wrong show';
+    feedback.innerHTML = `
+      <div class="feedback-title">❌ Not quite</div>
+      <div class="feedback-text">The correct answer is <strong>${prob.answer} ${prob.unit}</strong>. ${prob.explanation}</div>
+    `;
+  }
+  
+  updateProgress();
+}
+
+function nextProblem() {
+  answered = false;
+  currentProblem++;
+  
+  if (currentProblem < problems.length) {
+    renderProblem(currentProblem);
+  } else {
+    showResults();
+  }
+}
+
+function updateProgress() {
+  const progress = ((currentProblem + (answered ? 1 : 0)) / problems.length) * 100;
+  document.getElementById('progressBar').style.width = progress + '%';
+  document.getElementById('scoreDisplay').textContent = `Score: ${score}/${currentProblem + (answered ? 1 : 0)}`;
+}
+
+function showResults() {
+  document.getElementById('problemsContainer').style.display = 'none';
+  const results = document.getElementById('results');
+  const accuracy = Math.round((score / problems.length) * 100);
+  
+  // Set emoji based on score
+  let emoji = '🎉';
+  let message = 'Debut ready!';
+  if (score === 10) {
+    emoji = '🏆';
+    message = 'Perfect score! All-kill! 대박!';
+  } else if (score >= 8) {
+    emoji = '🌟';
+    message = 'Excellent work! Almost perfect!';
+  } else if (score >= 6) {
+    emoji = '💪';
+    message = 'Good job! Keep practicing!';
+  } else if (score >= 4) {
+    emoji = '📚';
+    message = 'Nice try! Review the formulas and try again!';
+  } else {
+    emoji = '🎯';
+    message = 'Keep training! Every idol practices daily!';
+  }
+  
+  document.getElementById('resultsEmoji').textContent = emoji;
+  document.getElementById('finalScore').textContent = `${score}/10`;
+  document.getElementById('resultsMsg').textContent = message;
+  document.getElementById('correctCount').textContent = score;
+  document.getElementById('wrongCount').textContent = problems.length - score;
+  document.getElementById('accuracy').textContent = accuracy + '%';
+  
+  results.classList.add('show');
+}
+
+// Initialize
+renderProblem(0);
+</script>
+
+</body>
+</html>
